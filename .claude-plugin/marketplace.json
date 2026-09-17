@@ -1,0 +1,12 @@
+{
+  "name": "dev-tools",
+  "owner": { "name": "StrategileCompany" },
+  "plugins": [
+    {
+      "name": "dev-skills",
+      "source": "./plugins/dev-skills",
+      "description": "Skills de desenvolvimento do time",
+      "version": "2.5.1"
+    }
+  ]
+}

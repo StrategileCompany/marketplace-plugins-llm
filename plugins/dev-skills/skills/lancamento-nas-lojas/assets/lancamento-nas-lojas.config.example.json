@@ -1,0 +1,506 @@
+{
+  "skill": "lancamento-nas-lojas",
+  "configVersion": 1,
+  "scope": "template",
+  "notes": [
+    "MOLDE. Copie, renomeie para lancamento-nas-lojas.config.json e preencha os value.",
+    "O arquivo PREENCHIDO nunca volta para este repositório: ele carrega os identificadores da sua organização. Guarde-o num diretório gitignored (.scratch/ ou .docs/) ou no seu perfil (~/.claude/).",
+    "Guarde IDENTIFICADORES, nunca segredos. Senha, .p8, chave privada do certificado e keystore ficam no cofre: aqui se aponta onde estão, nunca se cola o valor.",
+    "Divida em duas camadas: um arquivo com as variáveis de scope \"org\" (vale para todos os apps) e um por app com as de scope \"app\". Mesmo nome, mesmo schema; na sobreposição, o do app vence.",
+    "value null = não respondida. A skill pergunta, na entrevista, toda variável required cujo value esteja null — usando o description como a pergunta."
+  ],
+  "variables": [
+    {
+      "name": "org.play.login",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o e-mail de login do Google Play Console?"
+    },
+    {
+      "name": "org.play.dev_name",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o nome do desenvolvedor exibido na ficha da Play Store?"
+    },
+    {
+      "name": "org.play.portal",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a URL do Google Play Console? (default público)"
+    },
+    {
+      "name": "org.apple.conta",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o e-mail da conta Apple Developer da organização?"
+    },
+    {
+      "name": "org.apple.team_id",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o Team ID da Apple? É identificador, não segredo — mas se preferir, informe onde está no cofre em vez do valor."
+    },
+    {
+      "name": "org.apple.portal_dev",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a URL do portal Apple Developer? (default público)"
+    },
+    {
+      "name": "org.apple.portal_asc",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a URL do App Store Connect? (default público)"
+    },
+    {
+      "name": "org.github_org",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual a organização do GitHub que hospeda os repositórios dos apps?"
+    },
+    {
+      "name": "org.firebase.conta",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual conta Google administra o projeto Firebase usado para push?"
+    },
+    {
+      "name": "org.firebase.portal",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a URL do console do Firebase? (default público)"
+    },
+    {
+      "name": "org.contato.suporte_dpo",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o e-mail de suporte/DPO usado nas fichas das lojas e no contato do revisor?"
+    },
+    {
+      "name": "org.contato.revisor_nome",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o nome da pessoa de contato do revisor? A Apple exige nome, telefone e e-mail ao clicar em Adicionar para revisão."
+    },
+    {
+      "name": "org.contato.revisor_telefone",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o telefone de contato do revisor? Exigido pela Apple na submissão."
+    },
+    {
+      "name": "org.site.host_legal",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Em qual host a organização publica os documentos legais (política de privacidade)?"
+    },
+    {
+      "name": "org.politica.url_padrao",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual a URL padrão da política de privacidade dos apps? Precisa incluir a seção de exclusão de conta exigida pelo Google."
+    },
+    {
+      "name": "org.build.servico",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual serviço de build de nuvem é usado para gerar o .ipa sem Mac?"
+    },
+    {
+      "name": "org.build.url",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a URL do serviço de build de nuvem?"
+    },
+    {
+      "name": "org.build.asc_key_name",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o nome EXATO da chave da App Store Connect API cadastrada na UI do serviço de build? O codemagic.yaml referencia a chave por esse nome."
+    },
+    {
+      "name": "org.asc.key_id",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o Key ID da chave da App Store Connect API?"
+    },
+    {
+      "name": "org.asc.issuer_id",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o Issuer ID da chave da App Store Connect API?"
+    },
+    {
+      "name": "org.build.var_group",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o nome do grupo de variáveis de assinatura no serviço de build?"
+    },
+    {
+      "name": "org.build.secret_cert",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o nome da variável que guarda a chave privada do certificado iOS em base64? Só o NOME — o valor é secret no serviço de build."
+    },
+    {
+      "name": "org.build.notificacao_email",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Quais e-mails recebem o resultado do build (sucesso e falha)?"
+    },
+    {
+      "name": "org.app_id.prefixo",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual o prefixo de App ID (bundle id) da organização?"
+    },
+    {
+      "name": "org.app_id.convencao",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Como o sufixo do App ID é escrito em cada loja?"
+    },
+    {
+      "name": "org.papel.digita_senha",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Quem digita senha em formulário de loja (senha do revisor, por exemplo)? O agente nunca digita senha."
+    },
+    {
+      "name": "org.segredos.cofre",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Qual gerenciador de senhas guarda os segredos da organização?"
+    },
+    {
+      "name": "org.segredos.norma_ref",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Existe norma interna sobre segredos? Qual a referência para citar?"
+    },
+    {
+      "name": "default.categoria_play",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a categoria padrão dos apps na Google Play?"
+    },
+    {
+      "name": "default.categoria_apple",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Quais as duas categorias padrão dos apps na App Store?"
+    },
+    {
+      "name": "default.pais",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Em quais países os apps são distribuídos? Distribuir fora da UE dispensa os dados de comerciante exigidos pelo DSA na Apple."
+    },
+    {
+      "name": "default.idioma",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual o idioma padrão da ficha das lojas?"
+    },
+    {
+      "name": "default.preco",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual o modelo de preço padrão dos apps?"
+    },
+    {
+      "name": "default.versao_inicial",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a versão do primeiro binário? Depois, incrementar só o build (versionCode/buildNumber) por binário."
+    },
+    {
+      "name": "default.publico_alvo",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual o público-alvo declarado na Play? 18+ pula as etapas infantis/COPPA."
+    },
+    {
+      "name": "default.ios_deployment_target",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual o deployment target mínimo do iOS?"
+    },
+    {
+      "name": "default.targeted_device_family",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual o TARGETED_DEVICE_FAMILY? 1 = iPhone-only; 1,2 = iPhone e iPad."
+    },
+    {
+      "name": "default.build.instance_type",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a máquina usada no build iOS de nuvem?"
+    },
+    {
+      "name": "default.build.max_duration",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual o tempo máximo de build, em minutos?"
+    },
+    {
+      "name": "default.build.flutter_channel",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual canal do Flutter é usado no build?"
+    },
+    {
+      "name": "default.build.xcode",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual versão do Xcode o build de nuvem usa?"
+    },
+    {
+      "name": "default.build.cocoapods",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual versão do CocoaPods o build de nuvem usa?"
+    },
+    {
+      "name": "default.cert.keygen",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Como a chave RSA estável do certificado iOS é gerada?"
+    },
+    {
+      "name": "decl.data_safety.coleta",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Que dados pessoais os apps coletam, e quais são compartilhados com terceiros? É a base do Data Safety (Play) e do App Privacy (Apple)."
+    },
+    {
+      "name": "decl.data_safety.transito",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Os dados são criptografados em trânsito?"
+    },
+    {
+      "name": "decl.data_safety.exclusao",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "O app oferece exclusão de dados/conta? Qual a URL?"
+    },
+    {
+      "name": "decl.data_safety.nao_declarar",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Que categorias NÃO devem ser declaradas, e por quê?"
+    },
+    {
+      "name": "decl.ia_generativa",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Os apps usam IA generativa? Descreva como, para a declaração da Play."
+    },
+    {
+      "name": "decl.ia.provedores",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "requiredIf": "decl.ia_generativa",
+      "description": "Quais provedores de IA de terceiro recebem dado do usuário? A Apple (5.1.1(i)/5.1.2(i)) exige nomeá-los no consentimento in-app."
+    },
+    {
+      "name": "decl.anuncios",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Os apps exibem anúncios?"
+    },
+    {
+      "name": "decl.recursos_financeiros",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Os apps têm recursos financeiros (empréstimo, investimento, pagamento)?"
+    },
+    {
+      "name": "decl.aaid",
+      "value": null,
+      "required": true,
+      "scope": "org",
+      "description": "Os apps usam o Advertising ID (AAID)? Não responder bloqueia a publicação em Android 13+."
+    },
+    {
+      "name": "decl.classificacao",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Qual a classificação etária esperada em cada loja?"
+    },
+    {
+      "name": "decl.rastreamento",
+      "value": null,
+      "required": false,
+      "scope": "org",
+      "description": "Os apps rastreiam o usuário entre apps e sites de terceiros (App Tracking Transparency)?"
+    },
+    {
+      "name": "app.id_android",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o App ID (package) do app no Android? Use o prefixo da organização em snake_case. É IMUTÁVEL no Play."
+    },
+    {
+      "name": "app.id_ios",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o bundle id do app no iOS? Use o prefixo da organização em camelCase."
+    },
+    {
+      "name": "app.nome_exibicao",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o nome curto exibido no launcher?"
+    },
+    {
+      "name": "app.apple_id_numerico",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o Apple ID numérico do app? Em ASC: App Information → General → Apple ID."
+    },
+    {
+      "name": "app.politica.url",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual a URL da política de privacidade deste app? Por default, a da organização."
+    },
+    {
+      "name": "app.projeto_dir",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o caminho da pasta do app dentro do repositório (relevante em monorepo)?"
+    },
+    {
+      "name": "app.keystore.arquivo",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o caminho do keystore de upload do Android? Deve estar gitignored. Perder o keystore = nunca mais publicar update."
+    },
+    {
+      "name": "app.keystore.properties",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o caminho do arquivo de propriedades de assinatura do Android? Deve estar gitignored."
+    },
+    {
+      "name": "app.keystore.backup_doc",
+      "value": null,
+      "required": false,
+      "scope": "app",
+      "description": "Qual o doc gitignored que registra o backup da assinatura?"
+    },
+    {
+      "name": "app.seed_revisor",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "description": "Qual o script de seed que cria o grupo demo isolado do revisor em produção? As credenciais do revisor vêm dele — nunca invente."
+    },
+    {
+      "name": "app.api.prd",
+      "value": null,
+      "required": false,
+      "scope": "app",
+      "description": "Qual a URL base da API de produção?"
+    },
+    {
+      "name": "app.api.hmg",
+      "value": null,
+      "required": false,
+      "scope": "app",
+      "description": "Qual a URL base da API de homologação?"
+    },
+    {
+      "name": "app.script.store_status",
+      "value": null,
+      "required": false,
+      "scope": "app",
+      "description": "Qual o script read-only que consulta o status nas duas lojas por API?"
+    },
+    {
+      "name": "app.script.asc_resubmit",
+      "value": null,
+      "required": false,
+      "scope": "app",
+      "description": "Qual o script que reenvia a revisão no iOS? Deve ser dry-run por default."
+    },
+    {
+      "name": "app.doc_checklist",
+      "value": null,
+      "required": false,
+      "scope": "app",
+      "description": "Qual o doc de checklist de lançamento deste app, se existir?"
+    },
+    {
+      "name": "app.consentimento_ia",
+      "value": null,
+      "required": true,
+      "scope": "app",
+      "requiredIf": "decl.ia_generativa",
+      "description": "Qual o arquivo que implementa o diálogo de consentimento de IA in-app? Exigido pela Apple quando o app envia dado do usuário a IA de terceiro."
+    }
+  ]
+}

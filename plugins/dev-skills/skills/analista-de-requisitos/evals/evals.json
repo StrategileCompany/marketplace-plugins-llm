@@ -1,0 +1,23 @@
+{
+  "skill_name": "analista-de-requisitos",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "os popups estão fechando quando a gente clica ou toca fora dele",
+      "expected_output": "Análise dos sinais + grep leve no repo atual + JSON com status 'ready' (title descritivo sem prefixo, type 'bug', labels só as existentes no repo, campos do corpo e 'body' renderizado no template canônico com Problema/Requisito user-story/Critérios testáveis, suposição de ESC declarada) + prévia legível, sem narrar a análise no chat. O pedido não citou esforço/backlog/registro → NÃO aciona as demais skills nem cria a issue; encerra oferecendo 'estima', 'prioriza' ou 'registra' (hand-off para registra-issue só com pedido).",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "o dashboard tá meio confuso, queria melhorar isso",
+      "expected_output": "JSON com status 'needs_clarification' + clarifying_questions (o quê confunde / quem e quando / como ficaria melhor), apresentadas de forma agrupada ao usuário. NÃO monta requisito 'ready' nem inventa escopo, e não aciona o registro.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "queria que desse pra exportar meus dados pra usar no excel",
+      "expected_output": "Infere CSV respeitando filtros, grep leve para citar tela/endpoint, JSON 'ready' (type 'feature', labels 'enhancement' se existir) com critérios fortes (cabeçalho, filtros, formato pt-BR, UTF-8 BOM, caso vazio) + 1-2 perguntas de confirmação sem travar. Registro (registra-issue) só se o usuário pedir.",
+      "files": []
+    }
+  ]
+}

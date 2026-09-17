@@ -1,0 +1,19 @@
+# Configuração local do Claude Code (por máquina — nunca versionar)
+.claude/settings.local.json
+.claude/worktrees/
+
+# Rascunho local e configuração privada da organização — NUNCA versionar.
+# É onde vivem os identificadores de conta, portais e caminhos que a skill
+# lancamento-nas-lojas lê em runtime. Nada daqui entra no repositório público.
+.scratch/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores / IDEs
+.vs/
+.idea/
+*.swp
+*~
