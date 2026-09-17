@@ -1,34 +1,38 @@
-# Dev Skills — Marketplace de Skills do Claude Code
+# ia-plugins — skills de desenvolvimento para o Claude Code
 
-Um conjunto de **skills de desenvolvimento** — do requisito ao commit — distribuído como **um
-único plugin**, via um **marketplace** do Claude Code. Público e livre para usar, adaptar e
-forkar (licença MIT).
+Dez skills que levam uma necessidade do **requisito ao commit**. Elas interpretam um pedido vago e
+o transformam numa issue dimensionada e priorizada no board, implementam seguindo os critérios de
+aceitação, revisam a segurança do diff antes do commit, escrevem a mensagem, versionam e geram as
+notas da release. Uma delas conduz a publicação de apps mobile nas duas lojas.
 
-**Este repositório é a fonte da verdade das skills.** Elas são editadas aqui, versionadas
-aqui e distribuídas pelo plugin — ninguém (nem o mantenedor) usa cópias pessoais em
-`~/.claude/skills`, garantindo que todos rodem exatamente a mesma versão.
+Tudo distribuído como **um único plugin**, via um **marketplace** do Claude Code. Livre para usar,
+adaptar e forkar — licença [MIT](LICENSE).
 
-- **Repositório:** [`StrategileCompany/ia-plugins`](https://github.com/StrategileCompany/ia-plugins)
-- **Marketplace:** `dev-tools`
-- **Plugin (bundle):** `dev-skills` — agrupa todas as skills
-- **Invocação:** dentro do plugin, cada skill é chamada com namespace, ex.:
-  `/dev-skills:commit-message`
-- **Licença:** [MIT](LICENSE)
+```
+/plugin marketplace add StrategileCompany/ia-plugins
+/plugin install dev-skills@dev-tools
+```
 
-> **Antes de instalar, duas escolhas opinativas deste conjunto:**
-> - **As skills são escritas em português (pt-BR)** e produzem saída em pt-BR — mensagens de
->   commit, corpo de issue, release notes. Adapte no fork se o seu time escreve em outro idioma.
-> - Quase tudo é **agnóstico de stack e de repositório** (descobre board, labels, base remota e
->   comandos de build em runtime). A exceção é o **`versionador`**, que é deliberadamente
->   opinativo: projetos .NET/`.csproj`, versão no formato `yyyy.MM.dd.HHmm` e mensagem de bump
->   fixa. Se a sua convenção de versão é outra, essa é a skill a trocar.
+- **Marketplace:** `dev-tools` · **Plugin:** `dev-skills` — agrupa as dez skills
+- **Invocação:** com namespace (`/dev-skills:commit-message`) ou automática, quando o seu pedido
+  combina com a `description` da skill
+- Instalado no seu perfil, vale em **qualquer repositório**
+
+> **Duas escolhas opinativas, para você decidir antes de instalar:**
+> - **As skills são escritas em pt-BR e produzem saída em pt-BR** — mensagem de commit, corpo de
+>   issue, release notes. Se o seu time escreve em outro idioma, é o primeiro ajuste do fork.
+> - Quase tudo é **agnóstico de stack e de repositório**: board, labels, base remota e comandos de
+>   build são descobertos em runtime, e a skill degrada com aviso quando o recurso não existe. A
+>   exceção é o **`versionador`**, deliberadamente opinativo — projetos .NET/`.csproj`, versão no
+>   formato `yyyy.MM.dd.HHmm` e mensagem de bump fixa. Se a sua convenção é outra, é a skill a
+>   trocar.
 
 ---
 
 ## 1. Abordagem escolhida
 
-**Um único plugin agrupando todas as skills.** Todas as skills são de desenvolvimento e
-mantidas pelo mesmo time; agrupá-las dá **uma instalação, uma versão e um `git push`** para
+**Um único plugin agrupando todas as skills.** Elas compartilham o mesmo domínio e a mesma
+cadência de release, então agrupá-las dá **uma instalação, uma versão e um `git push`** para
 propagar tudo. As skills permanecem independentes (cada uma em `skills/<nome>/`), então o
 agrupamento não as acopla — adicionar ou remover uma skill é só adicionar/remover a pasta.
 Só faria sentido separar em plugins distintos se alguma skill tivesse público ou cadência
@@ -108,8 +112,8 @@ ia-plugins/                             ← raiz deste repo git
     {
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
-      "description": "Skills de desenvolvimento do time",
-      "version": "2.5.1"
+      "description": "Skills de desenvolvimento, do requisito ao commit",
+      "version": "2.5.2"
     }
   ]
 }
@@ -119,8 +123,8 @@ ia-plugins/                             ← raiz deste repo git
 ```json
 {
   "name": "dev-skills",
-  "description": "Coleção de skills de desenvolvimento do time",
-  "version": "2.5.1",
+  "description": "Dez skills de desenvolvimento para o Claude Code, do requisito ao commit",
+  "version": "2.5.2",
   "author": { "name": "StrategileCompany" }
 }
 ```
@@ -150,24 +154,24 @@ O repo é a fonte da verdade — as skills são editadas **diretamente aqui**:
    git commit -m "feat(dev-skills): adiciona/atualiza skill <nome>"
    git push
    ```
-4. Receba a atualização como todo mundo: `/plugin marketplace update dev-tools`
-   (ver seção 5). O mantenedor usa o **mesmo plugin instalado** que os colegas.
+4. Receba a atualização como qualquer instalação: `/plugin marketplace update dev-tools`
+   (ver seção 5). Quem mantém usa o **mesmo plugin instalado** que todo mundo — não há
+   caminho privilegiado.
 
 > **Dica (testar antes de publicar):** dá para adicionar o clone local como um marketplace
 > de teste — `/plugin marketplace add D:\caminho\do\repo` — e experimentar a mudança antes
 > do push. Remova o marketplace de teste depois, para não manter duas cópias das skills.
 
-> **Histórico (bootstrap):** este repo nasceu do empacotamento das skills pessoais que
-> ficavam em `~/.claude/skills/`. Após a migração para o plugin, as cópias pessoais foram
-> **removidas** — mantê-las junto com o plugin duplicaria cada skill na lista do Claude
-> (disparo ambíguo) e permitiria divergência de versão. Não recrie skills em
-> `~/.claude/skills`; edite aqui.
+> **Não mantenha cópias soltas.** Se você também guardar uma destas skills em
+> `~/.claude/skills/`, ela aparece duas vezes na lista do Claude — o disparo fica ambíguo e as
+> duas cópias divergem de versão com o tempo. Instale pelo plugin e edite aqui (ou no seu fork);
+> não as duplique no perfil.
 
 ---
 
 ## 4. Instalação — uma vez
 
-No Claude Code de cada pessoa:
+No Claude Code:
 ```
 /plugin marketplace add StrategileCompany/ia-plugins
 /plugin install dev-skills@dev-tools

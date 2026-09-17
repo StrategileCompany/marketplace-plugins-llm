@@ -5,8 +5,8 @@
     {
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
-      "description": "Skills de desenvolvimento do time",
-      "version": "2.5.1"
+      "description": "Skills de desenvolvimento, do requisito ao commit",
+      "version": "2.5.2"
     }
   ]
 }
