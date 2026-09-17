@@ -1,0 +1,18 @@
+# Finais de linha LF no checkout, em qualquer sistema operacional.
+#
+# Sem isto, um checkout no Windows converte tudo para CRLF — inclusive o clone
+# que o próprio marketplace faz ao instalar o plugin. O frontmatter YAML das
+# skills é sensível a isso: uma description escrita como escalar plano quebra o
+# parse com CRLF e a skill carrega com metadata vazia, sumindo da lista sem
+# emitir erro. Prefira sempre bloco `>-` na description; isto aqui é a segunda
+# camada de proteção.
+* text=auto eol=lf
+
+# Binários não devem sofrer conversão alguma.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary

@@ -1,5 +1,6 @@
 {
   "name": "dev-tools",
+  "description": "Skills de desenvolvimento em português para o Claude Code: da necessidade vaga à issue dimensionada e priorizada, implementação guiada pelos critérios de aceitação, revisão de segurança antes do commit, versionamento e release notes.",
   "owner": { "name": "StrategileCompany" },
   "plugins": [
     {

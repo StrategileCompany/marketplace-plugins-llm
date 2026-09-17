@@ -107,6 +107,7 @@ ia-plugins/                             ← raiz deste repo git
 ```json
 {
   "name": "dev-tools",
+  "description": "Skills de desenvolvimento em português para o Claude Code: …",
   "owner": { "name": "StrategileCompany" },
   "plugins": [
     {

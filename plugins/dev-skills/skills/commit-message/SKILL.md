@@ -1,6 +1,13 @@
 ---
 name: commit-message
-description: Escreve mensagens de commit no padrão Conventional Commits em português (pt-BR), com um parágrafo de negócio explicativo seguido de bullets técnicos sucintos e o footer "Refs: #<numero>". Use SEMPRE que o usuário pedir para gerar, escrever, montar, revisar ou padronizar uma mensagem de commit — inclusive quando disser apenas "mensagem de commit", "commit message", "gera o commit", "descreve essas alterações para commit" ou variações — em qualquer repositório. Vale mesmo quando o usuário não citar "Conventional Commits" explicitamente. Nunca inclui a LLM como coautora da mensagem.
+description: >-
+  Escreve mensagens de commit no padrão Conventional Commits em português (pt-BR), com um
+  parágrafo de negócio explicativo seguido de bullets técnicos sucintos e o footer "Refs:
+  #<numero>". Use SEMPRE que o usuário pedir para gerar, escrever, montar, revisar ou
+  padronizar uma mensagem de commit — inclusive quando disser apenas "mensagem de commit",
+  "commit message", "gera o commit", "descreve essas alterações para commit" ou variações — em
+  qualquer repositório. Vale mesmo quando o usuário não citar "Conventional Commits"
+  explicitamente. Nunca inclui a LLM como coautora da mensagem.
 ---
 
 # Mensagem de commit (Conventional Commits, pt-BR)
