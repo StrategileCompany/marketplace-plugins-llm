@@ -17,7 +17,7 @@ A diferença mais importante — e a que mais confunde quem vem de "comandos" �
 
 | | Como é acionado | Exemplo |
 |---|---|---|
-| **Skill** | **O agente decide** (model-invoked). Você descreve a tarefa em linguagem natural e o Copilot escolhe a skill pela `description`. | "gera a mensagem de commit dessas alterações" → dispara a skill `commit-message` |
+| **Skill** | **O agente decide** (model-invoked). Você descreve a tarefa em linguagem natural e o Copilot escolhe a skill pela `description`. | "gera a mensagem de commit dessas alterações" → dispara a skill `commit` |
 | **Prompt / slash command** | **Você chama** (user-invoked), digitando `/nome`. | `/explain`, `/nome-do-prompt` |
 | **Custom instructions** | **Sempre ativas**, como pano de fundo. | `copilot-instructions.md` |
 
@@ -112,7 +112,7 @@ para um dos locais acima. A estrutura final tem que ser:
 
 ```text
 ~/.copilot/skills/
-├── commit-message/
+├── commit/
 │   └── SKILL.md
 ├── versionador/
 │   ├── SKILL.md
@@ -124,7 +124,7 @@ para um dos locais acima. A estrutura final tem que ser:
 > ⚠️ **Armadilha nº 3 — nível de aninhamento.** O `SKILL.md` precisa estar
 > **direto** dentro da pasta da skill. Se você copiar a pasta-mãe inteira
 > (ex.: `skills/` ou `dev-skills/`) por engano, vira
-> `~/.copilot/skills/skills/commit-message/SKILL.md` (fundo demais) e o Copilot
+> `~/.copilot/skills/skills/commit/SKILL.md` (fundo demais) e o Copilot
 > não encontra.
 
 ---

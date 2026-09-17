@@ -1,5 +1,5 @@
 ---
-name: commit-message
+name: commit
 description: >-
   Escreve mensagens de commit no padrão Conventional Commits em português (pt-BR), com um
   parágrafo de negócio explicativo seguido de bullets técnicos sucintos e o footer "Refs:

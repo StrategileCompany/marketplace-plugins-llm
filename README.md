@@ -1,4 +1,4 @@
-# ia-plugins — skills de desenvolvimento para o Claude Code
+# marketplace-plugins-llm — skills de desenvolvimento para o Claude Code
 
 Dez skills que levam uma necessidade do **requisito ao commit**. Elas interpretam um pedido vago e
 o transformam numa issue dimensionada e priorizada no board, implementam seguindo os critérios de
@@ -9,12 +9,12 @@ Tudo distribuído como **um único plugin**, via um **marketplace** do Claude Co
 adaptar e forkar — licença [MIT](LICENSE).
 
 ```
-/plugin marketplace add StrategileCompany/ia-plugins
+/plugin marketplace add StrategileCompany/marketplace-plugins-llm
 /plugin install dev-skills@dev-tools
 ```
 
 - **Marketplace:** `dev-tools` · **Plugin:** `dev-skills` — agrupa as dez skills
-- **Invocação:** com namespace (`/dev-skills:commit-message`) ou automática, quando o seu pedido
+- **Invocação:** com namespace (`/dev-skills:commit`) ou automática, quando o seu pedido
   combina com a `description` da skill
 - Instalado no seu perfil, vale em **qualquer repositório**
 
@@ -43,7 +43,7 @@ de release muito diferentes.
 | Skill | O que faz |
 |---|---|
 | `analista-de-requisitos` | Transforma uma necessidade vaga num requisito estruturado (user story + critérios de aceitação) e conduz o pipeline de requisito: "requisito" → "com esforço" → "com backlog" → "completo". |
-| `commit-message` | Gera mensagens de commit no padrão Conventional Commits em pt-BR, com parágrafo de negócio, bullets técnicos e `Refs: #<número>` — e faz o commit, passando antes pelo gate de segurança. Nunca credita IA como co-autora. |
+| `commit` | Gera mensagens de commit no padrão Conventional Commits em pt-BR, com parágrafo de negócio, bullets técnicos e `Refs: #<número>` — e faz o commit, passando antes pelo gate de segurança. Nunca credita IA como co-autora. |
 | `desenvolvedor` | Orquestra o fluxo completo do backlog ao commit: issue → sincroniza a branch com a base remota (rebase) → In Progress → implementação → build+testes → conferência dos critérios de aceitação (marca os checkboxes da issue numa única atualização) → gate de segurança → commit/push → Done. |
 | `estima-esforco` | Estima o tamanho em escala T-shirt/Fibonacci ancorada em rubrica: enriquece o JSON do requisito (pré-issue) ou grava em issues vivas (título, corpo e Projects v2). |
 | `prioriza-backlog` | Prioriza por score valor÷esforço (Customer Value, Business Value, Risco, Efeito destravador): enriquece o JSON (pré-issue) ou grava no board, ordena o backlog e reabastece o To Do. |
@@ -56,7 +56,7 @@ de release muito diferentes.
 ## 2. Estrutura do repositório
 
 ```
-ia-plugins/                             ← raiz deste repo git
+marketplace-plugins-llm/                ← raiz deste repo git
 ├── README.md
 ├── LICENSE                             ← MIT
 ├── .gitignore
@@ -73,7 +73,7 @@ ia-plugins/                             ← raiz deste repo git
             │   ├── SKILL.md
             │   ├── evals/
             │   └── references/
-            ├── commit-message/
+            ├── commit/
             │   └── SKILL.md
             ├── desenvolvedor/
             │   ├── SKILL.md
@@ -114,7 +114,7 @@ ia-plugins/                             ← raiz deste repo git
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "2.5.2"
+      "version": "3.0.0"
     }
   ]
 }
@@ -125,7 +125,7 @@ ia-plugins/                             ← raiz deste repo git
 {
   "name": "dev-skills",
   "description": "Dez skills de desenvolvimento para o Claude Code, do requisito ao commit",
-  "version": "2.5.2",
+  "version": "3.0.0",
   "author": { "name": "StrategileCompany" }
 }
 ```
@@ -174,13 +174,13 @@ O repo é a fonte da verdade — as skills são editadas **diretamente aqui**:
 
 No Claude Code:
 ```
-/plugin marketplace add StrategileCompany/ia-plugins
+/plugin marketplace add StrategileCompany/marketplace-plugins-llm
 /plugin install dev-skills@dev-tools
 ```
-- Aceita também URL completa: `/plugin marketplace add https://github.com/StrategileCompany/ia-plugins.git`
+- Aceita também URL completa: `/plugin marketplace add https://github.com/StrategileCompany/marketplace-plugins-llm.git`
 - Para conferir: `/plugin list`
 - A skill fica disponível em **qualquer repositório** (é instalada no perfil do usuário,
-  não no projeto), como `/dev-skills:commit-message`. Além da invocação explícita, as
+  não no projeto), como `/dev-skills:commit`. Além da invocação explícita, as
   skills também disparam automaticamente pela `description` quando o pedido combina.
 - O repositório é **público** — não é preciso acesso especial. Basta ter `git` na máquina
   (e `gh` autenticado para as skills que falam com o GitHub: issues, labels e board).
@@ -202,7 +202,7 @@ Para não depender de cada um rodar os comandos:
   {
     "extraKnownMarketplaces": {
       "dev-tools": {
-        "source": { "source": "github", "repo": "StrategileCompany/ia-plugins" }
+        "source": { "source": "github", "repo": "StrategileCompany/marketplace-plugins-llm" }
       }
     },
     "enabledPlugins": {
