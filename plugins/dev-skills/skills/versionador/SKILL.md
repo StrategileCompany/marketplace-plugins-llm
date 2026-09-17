@@ -73,6 +73,10 @@ incluso no Windows) e no PowerShell 7.
 powershell -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_SKILL_DIR}/scripts/Update-Version.ps1" -Root "<raiz_do_projeto>"
 ```
 
+> **Fora do Claude Code** (GitHub Copilot, por exemplo) a variavel `${CLAUDE_SKILL_DIR}` **nao** e
+> substituida e o comando quebra sem erro claro. Troque-a pelo caminho da pasta desta skill — o
+> `scripts/` fica ao lado do `SKILL.md`.
+
 Observacoes:
 - Use `powershell` (5.1) ou `pwsh` (7) — ambos funcionam.
 - `-NoProfile -ExecutionPolicy Bypass` evita bloqueio por politica de execucao.

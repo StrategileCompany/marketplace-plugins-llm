@@ -18,14 +18,82 @@ adaptar e forkar — licença [MIT](LICENSE).
   combina com a `description` da skill
 - Instalado no seu perfil, vale em **qualquer repositório**
 
-> **Duas escolhas opinativas, para você decidir antes de instalar:**
-> - **As skills são escritas em pt-BR e produzem saída em pt-BR** — mensagem de commit, corpo de
->   issue, release notes. Se o seu time escreve em outro idioma, é o primeiro ajuste do fork.
-> - Quase tudo é **agnóstico de stack e de repositório**: board, labels, base remota e comandos de
->   build são descobertos em runtime, e a skill degrada com aviso quando o recurso não existe. A
->   exceção é o **`versionador`**, deliberadamente opinativo — projetos .NET/`.csproj`, versão no
->   formato `yyyy.MM.dd.HHmm` e mensagem de bump fixa. Se a sua convenção é outra, é a skill a
->   trocar.
+> **Antes de instalar, leia o [Disclaimer](#disclaimer)** — idioma, plataforma, stack, acoplamento
+> ao GitHub e o que as skills fazem sozinhas. Nada ali impede o uso, e tudo é forkável; mas são
+> escolhas opinativas que você herda junto com a instalação.
+
+---
+
+## Disclaimer
+
+O que você adota junto com o plugin. Quase tudo é descoberto em runtime e **degrada com aviso**
+quando o recurso não existe — nenhum item abaixo impede o uso, e todos são forkáveis. Ainda assim,
+são decisões nossas que passam a valer no seu ambiente, e é melhor conhecê-las antes.
+
+### 1. Plataforma: duas skills exigem Windows
+
+Oito das dez são agnósticas de sistema operacional. As duas que executam script, não:
+
+| Skill | Script | Exigência |
+|---|---|---|
+| `lancamento-nas-lojas` | `Validate-StoreAssets.ps1` | **Windows** — usa `System.Drawing`, indisponível no PowerShell 7 de macOS/Linux |
+| `versionador` | `Update-Version.ps1` | Windows PowerShell 5.1 (já incluso) ou `pwsh` 7 |
+
+A do `lancamento-nas-lojas` é a mais incômoda, porque quem publica app iOS costuma estar no macOS.
+Só a **validação de assets** fica de fora: checklist, ficha, declarações, ensaio de escala e gestão
+das lojas por API funcionam em qualquer sistema.
+
+### 2. Stack: o `versionador` é .NET, e o relógio é de São Paulo
+
+Deliberadamente opinativo: projetos **C#/.NET** (lê `<AssemblyVersion>` dos `.csproj`), versão no
+formato **`yyyy.MM.dd.HHmm`** e fuso padrão **`America/Sao_Paulo`** — sem `-TimeZone`, o carimbo sai
+no horário de Brasília. Se o seu projeto não é .NET, ou a sua convenção é SemVer, é a skill a
+trocar. As outras nove não presumem stack: build, testes e base remota são descobertos no repo.
+
+### 3. Idioma: pt-BR, inclusive no gatilho
+
+As skills são escritas em pt-BR e **produzem saída em pt-BR** — mensagem de commit, corpo de issue,
+CHANGELOG, release notes. O detalhe menos óbvio: as `description` que disparam as skills
+automaticamente também estão em português, então um pedido escrito em inglês aciona com menos
+precisão. Num time que escreve em outro idioma, traduzir as `description` é o primeiro ajuste do
+fork — não só a saída.
+
+### 4. Ferramenta: GitHub, pelo `gh` CLI
+
+Metade do plugin conversa com o GitHub e assume um arranjo específico:
+
+- **Projects v2** como board, com campos `Status`, `Estimate`, `Size` e `Priority`
+- **issue types nativos** da organização (Bug/Feature/Task)
+- **Conventional Commits** nas mensagens e tags `v*` marcando as versões
+
+Nada disso é hardcoded — board, campos e labels são descobertos em runtime, e cada skill avisa e
+segue quando falta o recurso ou o scope `project`. Mas num time que vive em Jira, Azure DevOps ou
+GitLab, as skills de backlog (`registra-issue`, `estima-esforco`, `prioriza-backlog`) entregam bem
+menos. As de requisito, implementação, segurança, commit e release notes continuam valendo.
+
+### 5. Política: o commit não credita IA como coautora
+
+A skill `commit` **proíbe** o trailer `Co-Authored-By:` apontando para modelo, assistente ou
+fornecedor de IA. É uma decisão nossa sobre autoria, não um padrão da indústria — e conflita com
+empresas que **exigem** a atribuição de IA nos commits. Sendo o seu caso, é uma linha a remover
+no fork.
+
+### 6. Autonomia: o que as skills fazem sem perguntar
+
+| Skill | Faz por padrão | Pede o seu "ok" |
+|---|---|---|
+| `versionador` | carimba a versão, gera as notas, commita, cria a tag e faz **push** | antes do push |
+| `commit` | estagia e **commita** | só devolve a mensagem se você pedir isso explicitamente |
+| `desenvolvedor` | rebase na base remota, move o board, implementa, commita | push, `--force-with-lease`, fechar a issue |
+| `lancamento-nas-lojas` | monta checklist, valida assets, consulta status por API | enviar para revisão, promover para produção |
+
+Os portões existem: `revisar-seguranca` barra o commit em achado Crítico/Alto, critério de aceitação
+não atendido também barra, e toda ação irreversível pede confirmação. Ainda assim, o modo padrão do
+`versionador` é `update + commit + push + tag` — um "versiona" solto chega ao remoto.
+
+As skills também **gravam memórias de projeto** no seu perfil do Claude (`projeto-board`,
+`projeto-core-business`, `projeto-novidades-local`), para não reperguntar a cada rodada qual é o
+board, a promessa central do produto e onde vivem as novidades.
 
 ---
 
@@ -61,7 +129,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
 ├── LICENSE                             ← MIT
 ├── .gitignore
 ├── docs/
-│   └── Skills-no-Copilot-Guia-para-Alunos.md   ← usar estas skills no GitHub Copilot
+│   └── Skills-no-Copilot-Guia-Pratico.md       ← usar estas skills no GitHub Copilot
 ├── .claude-plugin/
 │   └── marketplace.json                ← catálogo do marketplace "dev-tools"
 └── plugins/
@@ -114,7 +182,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "3.0.0"
+      "version": "3.1.0"
     }
   ]
 }
@@ -125,7 +193,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
 {
   "name": "dev-skills",
   "description": "Dez skills de desenvolvimento para o Claude Code, do requisito ao commit",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": { "name": "StrategileCompany" }
 }
 ```

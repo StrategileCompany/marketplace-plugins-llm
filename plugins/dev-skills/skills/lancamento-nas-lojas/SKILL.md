@@ -4,17 +4,16 @@ description: >-
   Conduz o lançamento (ou a atualização) de um app mobile na Google Play e na
   Apple App Store, do zero à submissão. Use SEMPRE que o usuário falar em
   "lançar o app", "publicar na Play Store", "publicar na App Store", "subir o
-  app na loja", "submeter para revisão", "TestFlight", "ficha da loja"/"store listing",
-  "Data Safety", "App Privacy", "classificação etária",
-  "assinar o app"/"keystore", "build iOS sem Mac"/"Codemagic", "checklist de
-  lançamento", "atualizar o app na loja", "status da revisão" ou "reenviar após
-  rejeição". Funciona em qualquer organização: lê contas, App ID, política e
-  assinatura de um arquivo de configuração externo e, não o encontrando,
-  entrevista o usuário e o gera. Separa pré-requisitos do projeto × exigências
-  de cada loja, VALIDA os assets (dimensão + canal alpha) por
-  script antes do upload, exige ENSAIO contra o maior tenant real e alarme de
-  5xx antes do envio (aprovado ≠ funcionando) e gerencia as lojas por API. NÃO
-  manuseia segredos: aponta onde estão, nunca cola o valor.
+  app na loja", "submeter para revisão", "TestFlight", "ficha da loja"/"store
+  listing", "Data Safety", "App Privacy", "classificação etária", "assinar o
+  app"/"keystore", "build iOS sem Mac"/"Codemagic", "checklist de lançamento",
+  "atualizar o app na loja", "status da revisão" ou "reenviar após rejeição".
+  Funciona em qualquer organização: lê contas, App ID, política e assinatura
+  de um arquivo de configuração externo e, não o encontrando, entrevista o
+  usuário e o gera. Valida os assets antes do upload, exige ENSAIO contra o
+  maior tenant real e alarme de 5xx antes do envio (aprovado ≠ funcionando) e
+  gerencia as lojas por API. NÃO manuseia segredos: aponta onde estão, nunca
+  cola o valor.
 ---
 
 # Lançamento de app nas lojas (Google Play + Apple App Store)
@@ -122,6 +121,10 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_SKILL_DIR}/scripts
 # Valida contra uma especificação (PASS/FAIL por arquivo):
 powershell -NoProfile -ExecutionPolicy Bypass -File "${CLAUDE_SKILL_DIR}/scripts/Validate-StoreAssets.ps1" -Path "<pasta>" -Spec play-phone
 ```
+
+> **Fora do Claude Code** (GitHub Copilot, por exemplo) a variável `${CLAUDE_SKILL_DIR}` **não** é
+> substituída e o comando quebra sem erro claro. Troque-a pelo caminho da pasta desta skill — o
+> `scripts/` fica ao lado do `SKILL.md`.
 
 `-Spec` aceita: `play-icon`, `apple-icon`, `play-feature`, `play-phone`, `apple-6.9`, `apple-6.5`,
 `apple-ipad`. Saída por linha (TAB):

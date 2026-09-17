@@ -271,6 +271,11 @@ do Claude para o Copilot:
   Copilot (por isso, aqui, **copiar é melhor que symlink** — o symlink forçaria
   conteúdo idêntico nos dois lados).
 
+> **Neste plugin:** as duas skills que chamam script — `lancamento-nas-lojas` e `versionador` —
+> usam `${CLAUDE_SKILL_DIR}` no comando de exemplo, porque é o que resolve no Claude Code. Ao
+> copiá-las para o Copilot, troque a variável pelo caminho da pasta da skill. As outras oito não
+> executam nada e vão sem ajuste.
+
 ---
 
 ## 9. "Minha skill não aparece" — checklist de diagnóstico
