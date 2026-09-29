@@ -1,9 +1,11 @@
 # marketplace-plugins-llm — skills de desenvolvimento para o Claude Code
 
-Dez skills que levam uma necessidade do **requisito ao commit**. Elas interpretam um pedido vago e
+Onze skills que levam uma necessidade do **requisito ao commit**. Elas interpretam um pedido vago e
 o transformam numa issue dimensionada e priorizada no board, implementam seguindo os critérios de
 aceitação, revisam a segurança do diff antes do commit, escrevem a mensagem, versionam e geram as
-notas da release. Uma delas conduz a publicação de apps mobile nas duas lojas.
+notas da release. Duas ampliam o alcance: uma conduz a publicação de apps mobile nas duas lojas, e
+outra deriva um repositório novo a partir de um existente, sem herdar o domínio nem a identidade
+do projeto antigo.
 
 Tudo distribuído como **um único plugin**, via um **marketplace** do Claude Code. Livre para usar,
 adaptar e forkar — licença [MIT](LICENSE).
@@ -13,7 +15,7 @@ adaptar e forkar — licença [MIT](LICENSE).
 /plugin install dev-skills@dev-tools
 ```
 
-- **Marketplace:** `dev-tools` · **Plugin:** `dev-skills` — agrupa as dez skills
+- **Marketplace:** `dev-tools` · **Plugin:** `dev-skills` — agrupa as onze skills
 - **Invocação:** com namespace (`/dev-skills:commit`) ou automática, quando o seu pedido
   combina com a `description` da skill
 - Instalado no seu perfil, vale em **qualquer repositório**
@@ -32,12 +34,13 @@ são decisões nossas que passam a valer no seu ambiente, e é melhor conhecê-l
 
 ### 1. Plataforma: duas skills exigem Windows
 
-Oito das dez são agnósticas de sistema operacional. As duas que executam script, não:
+Oito das onze são agnósticas de sistema operacional. As três que executam script, não:
 
 | Skill | Script | Exigência |
 |---|---|---|
 | `lancamento-nas-lojas` | `Validate-StoreAssets.ps1` | **Windows** — usa `System.Drawing`, indisponível no PowerShell 7 de macOS/Linux |
 | `versionador` | `Update-Version.ps1` | Windows PowerShell 5.1 (já incluso) ou `pwsh` 7 |
+| `deriva-projeto` | `Get-Inventario.ps1`, `Rename-Token.ps1` | Windows PowerShell 5.1 (onde foram testados) ou `pwsh` 7; escritos para rodar também em macOS/Linux |
 
 A do `lancamento-nas-lojas` é a mais incômoda, porque quem publica app iOS costuma estar no macOS.
 Só a **validação de assets** fica de fora: checklist, ficha, declarações, ensaio de escala e gestão
@@ -48,7 +51,10 @@ das lojas por API funcionam em qualquer sistema.
 Deliberadamente opinativo: projetos **C#/.NET** (lê `<AssemblyVersion>` dos `.csproj`), versão no
 formato **`yyyy.MM.dd.HHmm`** e fuso padrão **`America/Sao_Paulo`** — sem `-TimeZone`, o carimbo sai
 no horário de Brasília. Se o seu projeto não é .NET, ou a sua convenção é SemVer, é a skill a
-trocar. As outras nove não presumem stack: build, testes e base remota são descobertos no repo.
+trocar. As outras dez não presumem stack: build, testes e base remota são descobertos no repo. A
+`deriva-projeto` é agnóstica no roteiro e descobre a stack em runtime, mas seus guias detalhados
+cobrem .NET (Azure Functions, Blazor Server/WASM) — em outras stacks o critério vale igual, só sem
+o guia pronto.
 
 ### 3. Idioma: pt-BR, inclusive no gatilho
 
@@ -86,6 +92,7 @@ no fork.
 | `commit` | estagia e **commita** | só devolve a mensagem se você pedir isso explicitamente |
 | `desenvolvedor` | rebase na base remota, move o board, implementa, commita | push, `--force-with-lease`, fechar a issue |
 | `lancamento-nas-lojas` | monta checklist, valida assets, consulta status por API | enviar para revisão, promover para produção |
+| `deriva-projeto` | inventaria, classifica, exclui, renomeia, regenera segredos | o plano inteiro, numa aprovação só; **nunca** commita nem cria repo remoto |
 
 Os portões existem: `revisar-seguranca` barra o commit em achado Crítico/Alto, critério de aceitação
 não atendido também barra, e toda ação irreversível pede confirmação. Ainda assim, o modo padrão do
@@ -119,6 +126,7 @@ de release muito diferentes.
 | `release-notes` | Gera as notas da versão a partir dos commits do intervalo em dois documentos: CHANGELOG técnico (raiz) + Novidades/"What's new" para o usuário final (local configurável). Acionada pelo `versionador`. |
 | `revisar-seguranca` | Revisa a segurança do diff ancorada em OWASP (SQLi, segredos/tokens hardcoded, armazenamento de senha por hash, controle de acesso/multi-tenant/IDOR, prompt injection, XSS, cripto, dependências…), classifica por severidade e **barra o commit** em Crítico/Alto. Genérica; roda sob demanda ou como gate no `desenvolvedor`. |
 | `versionador` | Carimba versão `yyyy.MM.dd.HHmm` (data/hora) em projetos .NET/`.csproj` + `.js`/`.html`/`.webmanifest` e, por padrão, faz commit, push, cria a tag `v<versão>` e gera as notas (via `release-notes`) — escopo restringível. |
+| `deriva-projeto` | Deriva um projeto novo do clone de um repositório existente: remove o domínio antigo, preserva a infraestrutura (bootstrap/DI, autenticação, middlewares, layout, componentes genéricos, CI/CD, IaC), renomeia pastas, projetos, namespaces, chaves e recursos de nuvem, e **regenera segredos e identidades** em vez de herdá-los — o único erro desta operação que não aparece no build. Levanta um inventário por script (variantes de caixa do token, encoding, pontos de entrada, chaves sensíveis, domínios, banco, artefatos de agente), renomeia byte-safe preservando encoding e BOM, e fecha com build, testes, varredura de resíduos e a aplicação subindo. **Nunca commita.** |
 | `lancamento-nas-lojas` | Conduz o lançamento (ou atualização) de um app na Google Play e Apple App Store. **Lê as constantes da sua organização** (contas, App ID, política, assinatura) de um arquivo de configuração externo e, não o encontrando, **entrevista você e o gera**. Separa pré-requisitos × exigências de cada loja, **valida assets** (dimensão + alpha) via script PowerShell, exige o **ensaio contra o maior tenant real** e alarme de 5xx antes do envio (_aprovado ≠ funcionando_), gerencia as lojas **por API** em vez de navegador, e guia ficha, Data Safety/App Privacy e o build iOS de nuvem. |
 
 ## 2. Estrutura do repositório
@@ -143,6 +151,11 @@ marketplace-plugins-llm/                ← raiz deste repo git
             │   └── references/
             ├── commit/
             │   └── SKILL.md
+            ├── deriva-projeto/
+            │   ├── SKILL.md
+            │   ├── evals/
+            │   ├── references/
+            │   └── scripts/
             ├── desenvolvedor/
             │   ├── SKILL.md
             │   └── references/
@@ -182,7 +195,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "3.1.0"
+      "version": "3.2.0"
     }
   ]
 }
@@ -192,8 +205,8 @@ marketplace-plugins-llm/                ← raiz deste repo git
 ```json
 {
   "name": "dev-skills",
-  "description": "Dez skills de desenvolvimento para o Claude Code, do requisito ao commit",
-  "version": "3.1.0",
+  "description": "Onze skills de desenvolvimento para o Claude Code, do requisito ao commit",
+  "version": "3.2.0",
   "author": { "name": "StrategileCompany" }
 }
 ```

@@ -1,0 +1,77 @@
+{
+  "skill_name": "deriva-projeto",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "clonei o MeuSistema.Api aqui pra usar como ponto de partida do Cobranca.Api. preciso tirar tudo que é do sistema antigo e deixar só a infra, mantendo o build de pé",
+      "expected_output": "Avisa de saída que não haverá commit. Pergunta (AskUserQuestion, numa rodada) nome/namespace novos com o padrão detectado como recomendado, histórico Git, nomes de recurso/IaC e banco. Roda Get-Inventario.ps1 + build/testes de baseline. Lê o guia da stack apontada pelo inventário e o segredos-e-identidades.md. Classifica fica/sai/fronteira/regenerar, fecha o grafo, apresenta plano em bloco com aprovação única. NÃO commita.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "vou começar um sistema novo de cobrança. em vez de fazer do zero quero aproveitar esse repositório que já tem auth, esteira e terraform prontos. pode limpar o que é do projeto antigo?",
+      "expected_output": "Dispara a skill. Trata esteira/Terraform pelo ci-cd-e-iac.md: descobre se o IaC está no repo ou se o pipeline chama template externo, renomeia declaração e interpolação juntas, lista segredos do CI como pendência, alerta sobre estado remoto próprio e NÃO roda apply/deploy.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "usa o TaxasEncargos.Functions como template pro BonusProdutor.Functions. namespace novo é Acme.BonusProdutor",
+      "expected_output": "Dispara. Lê references/azure-functions.md: confirma isolated vs in-process e, se for in-process, PARA e avisa do fim de suporte em 10/11/2026 antes de derivar, oferecendo migrar primeiro. Se todas as functions saírem, cria GET /api/health anônima e confirma que é anônima também no middleware próprio. Revisa functionTimeout contra o plano de hospedagem.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "clonei o repo pra pasta nova. agora quero que vc tire tudo que é específico e renomeie de MeuSistema pra Cobranca.Credenciamento (pastas, csproj, namespace, css, tudo)",
+      "expected_output": "Dispara. Executa na ordem: limpa bin/obj e worktrees dentro do repo → exclui → confere encoding → Rename-Token.ps1 com -DryRun primeiro, -Map com todas as variantes de caixa do inventário e mais longos primeiro → prefixo de CSS → regenera segredos → ajustes manuais → zera versão/CHANGELOG. Verifica com build, testes, varredura de resíduos e a app subindo.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "esse projeto aqui tem a autenticação e a esteira que eu quero. dá pra transformar num template limpo pra eu começar outra coisa em cima?",
+      "expected_output": "Dispara mesmo sem os nomes dos projetos. Pergunta os nomes antes de analisar. Trata identidade/multi-tenancy, cobrança e notificação como FRONTEIRA (capacidade de plataforma disfarçada de domínio), listando uma a uma para o usuário decidir, em vez de excluir por terem nome de contexto de negócio.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "deriva o projeto novo desse repo. o back lê a configuração de uma tabela do banco no Program.cs",
+      "expected_output": "Dispara. Lê banco-de-dados.md: classifica tabelas (config/usuário/tenant ficam; entidades do negócio saem), pergunta baseline novo vs histórico de migrations, e trata o seed de configuração como segredo — chaves ficam, valores são regenerados. Reconhece que o bootstrap não sobe sem o banco: sobe um banco local com o script do repo ou DECLARA a pendência do smoke test em vez de afirmar que testou.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "renomeia a classe BackendApiService pra ApiClient e ajusta as referências",
+      "expected_output": "NÃO dispara. É refatoração pontual de um símbolo no projeto atual, não derivação de projeto novo.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "cria um projeto blazor wasm novo do zero com dotnet new, com autenticação por oidc",
+      "expected_output": "NÃO dispara. Projeto do zero, sem repositório-base para derivar.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "muda o namespace raiz desse projeto de Acme.Comissoes pra Acme.Comissoes.Web, só isso",
+      "expected_output": "NÃO dispara. Renomeia o mesmo projeto; não há remoção de domínio nem projeto novo sendo derivado.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "esse projeto tem bastante código morto acho. faz uma revisão e me diz o que dá pra remover com segurança",
+      "expected_output": "NÃO dispara. Limpeza do próprio projeto, que continua sendo ele mesmo.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "os nomes de recurso no main.tf.json estão apontando pro DEV. duplica o bloco pra HML trocando o sufixo",
+      "expected_output": "NÃO dispara. Edição de IaC dentro do projeto atual, sem derivação.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "quero extrair os componentes genéricos desse projeto (grid, toasts, dropdowns) pra um pacote interno compartilhado entre os sistemas",
+      "expected_output": "NÃO dispara. Extração de biblioteca do projeto existente, que permanece; não é derivar um sistema novo.",
+      "files": []
+    }
+  ]
+}
