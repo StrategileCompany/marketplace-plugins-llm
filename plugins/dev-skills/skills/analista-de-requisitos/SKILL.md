@@ -115,7 +115,10 @@ localizar, siga mesmo assim e diga onde provavelmente fica.
   fora e ofereça na confirmação. Nunca invente label. O objetivo é ser genérico em qualquer repo,
   sem impor uma taxonomia que você não conhece.
 - **Duplicatas/relacionadas:** `gh issue list --search "<palavras-chave>" --state all`
-  (referencie como `#NN` quando fizer sentido).
+  (referencie como `#NN` quando fizer sentido). O `gh issue list`/`--search` já é **por
+  repositório**, então duplicatas estão cobertas. Mas ao citar issues vindas do **board**,
+  qualifique com o repo (`owner/repo#NN`): num board da org, compartilhado por vários produtos,
+  `#2` é ambíguo.
 
 ## Clareza suficiente? (quando parar de perguntar)
 Considere pronto quando conseguir preencher, com confiança:

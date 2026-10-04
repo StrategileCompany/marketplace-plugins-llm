@@ -7,7 +7,7 @@
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "3.2.0"
+      "version": "3.2.1"
     }
   ]
 }

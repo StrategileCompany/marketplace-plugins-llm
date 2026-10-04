@@ -122,8 +122,13 @@ maior prioridade — de forma **incremental**:
 - **Efeito incremental:** conforme você move issues do To Do pra In Progress/Done, as vagas abrem; a
   próxima rodada repõe com o próximo do ranking. Rodar a skill = "mantém meu To Do cheio com o que
   mais vale agora".
+- **Board compartilhado por vários repositórios:** a coluna `To Do` é da **org** — as vagas e o que
+  já está lá pertencem a **todos** os produtos. Encher as `N` vagas com o topo do ranking de um só
+  repo mistura backlogs de produtos diferentes. Nesse caso, **pule o reabastecimento e avise**, ou
+  conte as vagas só entre os itens do **repo atual**; combine com o usuário qual dos dois.
 - Mecânica do Status (single-select → `--single-select-option-id`) em `references/gh-projects.md`.
-  Sem board/scope/coluna, **avise e siga** (entrega só o ranking).
+  Lá também está a regra de localizar o item por **repositório + número** (num board da org o
+  número sozinho é ambíguo). Sem board/scope/coluna, **avise e siga** (entrega só o ranking).
 
 ### Fluxo
 1. **Alvo:** uma issue (número/URL) ou "o backlog" (`gh issue list --state open`).

@@ -14,10 +14,19 @@ gh project field-list "$PROJ_NUM" --owner "$OWNER" --format json \
   --jq '.fields[] | select(.name=="Status") | {id, options}'
 STATUS_FIELD=<id>; OPT_INPROGRESS=<id de "In Progress">; OPT_DONE=<id de "Done">
 ```
+**Achar o item (o board pode ser da org, com vários repos):** o `item-list` **trunca em 100** por
+padrão e filtrar só por `.content.number` casa com a issue de **outro repositório** — e um
+`item-edit` em item errado move o Status da issue de **outro produto**, em silêncio. Sempre
+`--limit 1000` + filtro por **repo + número**:
+```bash
+ITEM=$(gh project item-list "$PROJ_NUM" --owner "$OWNER" --limit 1000 --format json \
+  --jq ".items[] | select((.content.repository // \"\") == \"$OWNER/$REPO\" and .content.number == <N>) | .id")
+# vazio? então a issue ainda não está no board: aí sim use item-add
+[ -z "$ITEM" ] && ITEM=$(gh project item-add "$PROJ_NUM" --owner "$OWNER" \
+  --url "https://github.com/$OWNER/$REPO/issues/<N>" --format json --jq '.id')
+```
 Aplicar (Status é single-select → `--single-select-option-id`, não `--number`):
 ```bash
-ITEM=$(gh project item-add "$PROJ_NUM" --owner "$OWNER" \
-  --url "https://github.com/$OWNER/$REPO/issues/<N>" --format json --jq '.id')
 # início da implementação:
 gh project item-edit --id "$ITEM" --field-id "$STATUS_FIELD" --project-id "$PROJ_ID" \
   --single-select-option-id "$OPT_INPROGRESS"
@@ -26,7 +35,8 @@ gh project item-edit --id "$ITEM" --field-id "$STATUS_FIELD" --project-id "$PROJ
   --single-select-option-id "$OPT_DONE"
 ```
 Os nomes podem variar por repo; se não houver "Status"/"In Progress"/"Done", use os equivalentes
-existentes ou pule (avisando). `item-add` repetido é inócuo (item já existe).
+existentes ou pule (avisando). `item-add` repetido é inócuo (item já existe), mas **confira repo e
+número** antes do `item-edit`: em item errado, ele move a issue de outro produto sem erro.
 
 ## Fechar a issue
 ```bash

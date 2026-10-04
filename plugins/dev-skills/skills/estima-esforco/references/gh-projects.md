@@ -62,22 +62,33 @@ gh project field-list "$PROJ_NUM" --owner "$OWNER" --format json \
   --jq '.fields[] | select(.name=="Size") | {id, options}'
 SIZE_FIELD=<id do Size>; OPT=<id da opção mapeada>
 ```
+**Achar o item (o board pode ser da org, com vários repos):** o `item-list` **trunca em 100** por
+padrão e filtrar só por `.content.number` casa com a issue de **outro repositório**. Sempre
+`--limit 1000` + filtro por **repo + número**:
+```bash
+ITEM=$(gh project item-list "$PROJ_NUM" --owner "$OWNER" --limit 1000 --format json \
+  --jq ".items[] | select((.content.repository // \"\") == \"$OWNER/$REPO\" and .content.number == <n>) | .id")
+# vazio? então a issue ainda não está no board: aí sim use item-add
+[ -z "$ITEM" ] && ITEM=$(gh project item-add "$PROJ_NUM" --owner "$OWNER" \
+  --url "https://github.com/$OWNER/$REPO/issues/<n>" --format json --jq '.id')
+```
+> **Confira antes de gravar:** um `item-edit` em item errado altera a issue de **outro produto**,
+> em silêncio e sem erro. O item encontrado tem de bater em **repo e número**.
+
 Aplicar na issue:
 ```bash
-ITEM=$(gh project item-add "$PROJ_NUM" --owner "$OWNER" \
-  --url "https://github.com/$OWNER/$REPO/issues/<n>" --format json --jq '.id')
 # Estimate = pontos (número)
 gh project item-edit --id "$ITEM" --field-id "$EST_FIELD" --project-id "$PROJ_ID" --number <pontos>
 # Size = opção mapeada (single-select usa --single-select-option-id, NÃO --number)
 gh project item-edit --id "$ITEM" --field-id "$SIZE_FIELD" --project-id "$PROJ_ID" \
   --single-select-option-id "$OPT"
 ```
-Verificar:
+Verificar (mesmo filtro por repo + número):
 ```bash
-gh project item-list "$PROJ_NUM" --owner "$OWNER" --format json \
-  --jq '.items[] | select(.content.number? == <n>) | {estimate, size}'
+gh project item-list "$PROJ_NUM" --owner "$OWNER" --limit 1000 --format json \
+  --jq ".items[] | select((.content.repository // \"\") == \"$OWNER/$REPO\" and .content.number == <n>) | {estimate, size}"
 ```
-Em **re-estimativa**, o item já existe (`item-add` de novo é inócuo); atualize `--number` e o
+Em **re-estimativa**, o item já existe (a busca acima o encontra); atualize `--number` e o
 `--single-select-option-id`.
 
 ## Degradação graciosa (Projects opcional)

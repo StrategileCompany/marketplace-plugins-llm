@@ -124,9 +124,18 @@ PROJ_NUM=<número>
 PROJ_ID=$(gh project view "$PROJ_NUM" --owner "$OWNER" --format json --jq '.id')
 
 # 1) adiciona a issue ao board (SEMPRE; repetir é inócuo — o item já existe)
+#    use o id devolvido aqui: é o item desta issue, deste repo.
 ITEM=$(gh project item-add "$PROJ_NUM" --owner "$OWNER" \
   --url "https://github.com/$OWNER/$REPO/issues/$N" --format json --jq '.id')
 ```
+> **Se precisar reler o item** (em vez de usar o id do `item-add`), num board da org compartilhado
+> por vários repositórios o número sozinho é **ambíguo** e o `item-list` ainda **trunca em 100**.
+> Busque sempre com `--limit 1000` e filtro por **repo + número** — um `item-edit` em item errado
+> altera a issue de **outro produto**, em silêncio:
+> ```bash
+> ITEM=$(gh project item-list "$PROJ_NUM" --owner "$OWNER" --limit 1000 --format json \
+>   --jq ".items[] | select((.content.repository // \"\") == \"$OWNER/$REPO\" and .content.number == $N) | .id")
+> ```
 
 **Com `estimativa`** — campos **Estimate** (número) e **Size** (single-select; mapa
 `PP→XS · P→S · M→M · G→L · GG/XG/XXG→XL`):

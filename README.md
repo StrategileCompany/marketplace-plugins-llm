@@ -195,7 +195,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "3.2.0"
+      "version": "3.2.1"
     }
   ]
 }
@@ -206,7 +206,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
 {
   "name": "dev-skills",
   "description": "Onze skills de desenvolvimento para o Claude Code, do requisito ao commit",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "author": { "name": "StrategileCompany" }
 }
 ```
