@@ -7,9 +7,10 @@ skill), é **enriquecido no mesmo arquivo** pelas etapas seguintes e é consumid
 | Etapa | Skill | O que preenche |
 |---|---|---|
 | 1. Análise | `analista-de-requisitos` | `title`, `type`, `labels`, `fields`, `body`, `status` |
+| 1b. Plano (opcional) | `analista-de-requisitos` (Plan Mode) | campo `plano_implementacao` + seção `## Plano de implementação` no `body` |
 | 2. Esforço | `estima-esforco` (modo JSON) | bloco `estimativa` |
 | 3. Prioridade | `prioriza-backlog` (modo JSON) | bloco `prioridade` |
-| 4. Registro | `registra-issue` | bloco `registro` (nº/URL após criar) |
+| 4. Registro | `registra-issue` | bloco `registro` (nº/URL após criar) + comentário com o plano (se houver) |
 
 O arquivo vive no scratchpad da sessão (ex.: `requisito-<slug>.json`). Cada skill **acrescenta o
 seu bloco sem tocar no resto**. O registro pode acontecer em qualquer etapa — blocos ausentes só
@@ -33,6 +34,7 @@ significam que a issue nasce sem aquelas marcações.
   "body": "markdown do corpo, já renderizado no template canônico abaixo",
   "status": "ready | needs_clarification",
   "clarifying_questions": [],
+  "plano_implementacao": "markdown do plano de implementação, gerado em Plan Mode; omitido se não foi pedido",
   "estimativa": {
     "tshirt": "PP | P | M | G | GG | XG | XXG",
     "pontos": 3,
@@ -57,6 +59,11 @@ significam que a issue nasce sem aquelas marcações.
   siga o pipeline — pergunte ao usuário primeiro; a cadeia continua depois das respostas.
 - `fields` são a informação mapeada (rastreio/reuso); `body` é o que vai para a issue. Gere os
   dois juntos, coerentes.
+- `plano_implementacao`: **omitido** até o usuário pedir planejamento (não crie vazio). Quem
+  preenche é a própria `analista-de-requisitos`, ao entrar em **Plan Mode** — diferente de
+  `estimativa`/`prioridade`, que só enriquecem o JSON, aqui a skill aciona `EnterPlanMode` de
+  verdade. Presente, o `body` ganha a seção `## Plano de implementação` (template abaixo) e a
+  `registra-issue` publica o conteúdo como **comentário** na issue, na criação.
 - `estimativa` / `prioridade` / `registro`: **omitidos** até a skill correspondente rodar (não crie
   vazios). A analista não os preenche.
 - O `body` permanece **só o requisito**: as linhas de estimativa/prioridade da issue são compostas
@@ -74,6 +81,9 @@ Como <persona>, quero <capacidade/comportamento>, para <benefício>.
 - [ ] <condição objetiva e testável>
 - [ ] <cobre casos de borda: mobile, ESC, erro, vazio...>
 
+## Plano de implementação (opcional)
+Já existe um plano de implementação para este requisito — resgate-o no comentário desta issue.
+
 ## Notas técnicas (opcional)
 <Módulo e 1–3 arquivos prováveis (do grep leve), dependências (#NN), links.>
 
@@ -84,7 +94,10 @@ Como <persona>, quero <capacidade/comportamento>, para <benefício>.
 - **Problema, Requisito, Critérios de aceitação** são obrigatórias.
 - O "(opcional)" nos cabeçalhos é nota deste template, **não** vai para a issue: com conteúdo,
   use o cabeçalho limpo (`## Notas técnicas`); vazia, **omita a seção inteira** (sem cabeçalho
-  órfão).
+  órfão). Vale para Notas técnicas, Fora de escopo/Suposições **e** Plano de implementação.
+- `Plano de implementação` só aparece quando o JSON tiver `plano_implementacao`; o texto é sempre
+  o mesmo ponteiro fixo (acima) — **não** repita o conteúdo do plano no corpo, ele vai só no
+  comentário que a `registra-issue` publica na criação.
 - Critérios de aceitação cravam o comportamento e cobrem bordas (ESC, toque, telas, vazio). Toda
   suposição inferida aparece explícita.
 - `relacionadas` pode ser citada em Notas técnicas (ex.: "Relacionada: #12").

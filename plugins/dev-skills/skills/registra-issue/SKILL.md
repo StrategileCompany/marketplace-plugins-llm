@@ -8,7 +8,9 @@ description: >-
   Aplica TUDO de uma vez na criação: issue type nativo (Bug/Feature/Task),
   labels existentes, prefixo de tamanho no título, linhas de
   estimativa/prioridade no corpo e SEMPRE adiciona a issue ao board da org,
-  preenchendo Estimate/Size/Priority quando presentes. Funciona em QUALQUER
+  preenchendo Estimate/Size/Priority quando presentes. Se o requisito tiver
+  plano_implementacao (gravado em Plan Mode), publica o plano como comentário
+  logo após criar a issue. Funciona em QUALQUER
   repositório: detecta o repo pelo remote do Git e usa o board memorizado
   (memória projeto-board; degrada com aviso). Pode ser acionada em QUALQUER
   ponto do pipeline e é o fecho do "requisito completo" (aí cria direto, sem
@@ -25,7 +27,9 @@ no repositório GitHub **atual**, via `gh`, **de uma vez só**: cria a issue já
 (prefixo de tamanho, se houver estimativa), o corpo final (requisito + linhas de
 estimativa/prioridade, se houver), o **issue type nativo**, as labels **opcionais**, e **sempre**
 adiciona a issue ao **projeto (board) da org** — com os campos Estimate/Size/Priority preenchidos
-quando o JSON os tiver. Nada de criar e ficar editando depois.
+quando o JSON os tiver. Se houver `plano_implementacao`, publica seu conteúdo como **comentário**
+na issue logo após criá-la (o `body`, renderizado pela `analista-de-requisitos`, já chega com a
+seção que aponta pra esse comentário). Nada de criar e ficar editando depois.
 
 Ela é mecânica: não reescreve o conteúdo do requisito — posta o `body` como veio.
 
@@ -77,6 +81,9 @@ Descubra e mostre qual é: `gh repo view --json nameWithOwner -q .nameWithOwner`
    - Salve o corpo final em `issue-body.md` (ferramenta Write).
    - `URL=$(gh issue create --title "<título final>" --body-file "<caminho>/issue-body.md" [--label "<l>"])`
    - `gh issue create` devolve a URL; o número é o final dela.
+   - **Com `plano_implementacao`:** salve o conteúdo em `plano-implementacao.md` e publique como
+     comentário (`gh issue comment <n> --body-file "<caminho>/plano-implementacao.md"`) — nunca
+     dentro do `body`; o corpo já traz a seção que aponta pra esse comentário.
 6. **Defina o tipo nativo** (se houve match no passo 3):
    - `gh api --method PATCH "repos/<owner>/<repo>/issues/<n>" -f type="<Bug|Feature|Task>"`
    - (`gh` 2.92 não tem `--type` no create/edit; o tipo se aplica pela API REST.)
@@ -88,7 +95,8 @@ Descubra e mostre qual é: `gh repo view --json nameWithOwner -q .nameWithOwner`
    graciosa). Comandos e o padrão da memória em `references/gh-e-labels.md`.
 8. **Feche o ciclo:** acrescente ao JSON o bloco
    `"registro": { "numero": <n>, "url": "<url>" }` e **reporte numa linha**: nº, URL, tipo, board
-   (ok/pulado) e campos gravados.
+   (ok/pulado), campos gravados e, se houve `plano_implementacao`, que o plano foi publicado como
+   comentário.
 
 > Se a issue nasceu sem estimativa/prioridade e o usuário quiser depois, `estima-esforco` e
 > `prioriza-backlog` atuam sobre a **issue viva** normalmente.
@@ -101,8 +109,10 @@ Descubra e mostre qual é: `gh repo view --json nameWithOwner -q .nameWithOwner`
 - Não edite o conteúdo do requisito — se algo estiver errado, aponte e devolva para a análise.
 - O board é **sempre tentado**; quando impossível (sem scope/board), **avise** — nunca omita em
   silêncio.
+- O **plano de implementação** vai sempre como **comentário**, nunca dentro do `body` — o corpo
+  só aponta para ele.
 
 ## Referência
 - `references/gh-e-labels.md` — schema do JSON de entrada (com os blocos de enriquecimento),
   montagem do título/corpo finais, **issue types** (comandos e mapeamento), labels, board
-  (item-add + campos) e troubleshooting do `gh`.
+  (item-add + campos), o comentário do plano de implementação e troubleshooting do `gh`.

@@ -6,8 +6,10 @@ description: >-
   para virar issue no repositório atual. É a PORTA DE ENTRADA do pipeline de
   requisito: "requisito" (só a análise), "requisito com esforço" (+
   estima-esforco), "requisito com backlog" (+ prioriza-backlog) e "requisito
-  completo" (a cadeia toda + registra-issue, criando a issue direto). Redige o
-  requisito como user story com critérios de aceitação e, se faltar clareza,
+  completo" (a cadeia toda + registra-issue, criando a issue direto). Quando o
+  pedido inclui "planejar"/"plano de implementação", entra em Plan Mode
+  (EnterPlanMode) antes de qualquer alteração e grava o plano no campo
+  plano_implementacao. Redige o requisito como user story com critérios de aceitação e, se faltar clareza,
   faz perguntas objetivas antes de concluir. Funciona em QUALQUER repositório:
   atua no diretório e no repo Git atuais. Use SEMPRE que o usuário relatar um
   problema, bug, incômodo, ideia, melhoria ou necessidade e quiser — explícita
@@ -59,6 +61,26 @@ Regras do encadeamento:
   equivalem a análise + registro direto — sem estimativa/prioridade, a menos que o usuário peça.
 - **A única parada legítima é clareza:** se o requisito ficar `needs_clarification`, pergunte e
   aguarde; com as respostas, a cadeia continua de onde parou.
+- **Planejar é ortogonal à tabela acima:** qualquer um dos quatro pedidos pode vir acompanhado de
+  "e planeja"/"com plano de implementação" — nesse caso, ver "Planejamento (Plan Mode)" abaixo.
+
+## Planejamento (Plan Mode)
+Diferente de `estima-esforco`/`prioriza-backlog` — que só enriquecem o JSON sem tocar ferramentas
+—, planejar muda o que você **faz**: entra no **Plan Mode** do Claude Code (`EnterPlanMode`) para
+desenhar a implementação **antes de alterar qualquer código**.
+
+- **Pedido inicial já menciona planejar** ("analisa e planeja", "cria um plano de implementação",
+  "planeja essa issue"): feche a análise normalmente primeiro — monte o JSON, **grave o arquivo**
+  e mostre a prévia — e **só então** entre em Plan Mode. O plano que sair dali vai para o campo
+  `plano_implementacao` do **mesmo arquivo já gravado** (não recomece o requisito); acrescente
+  também a seção `## Plano de implementação` ao `body` desse arquivo (template em
+  `references/formato-requisito.md`), apontando para o comentário onde o plano será publicado.
+- **Pedido inicial não menciona planejar:** não entre em Plan Mode por conta própria. Ofereça a
+  opção na sugestão final, junto de "estimar"/"priorizar"/"registrar" (ver Fluxo de trabalho).
+- **Pedido depois da prévia** ("planeja", "planejar", "cria o plano"): mesmo procedimento — Plan
+  Mode, grava `plano_implementacao` e a seção no `body`, no arquivo já existente.
+- **Planejar não substitui as outras etapas:** depois do plano, a cadeia continua normalmente
+  (`estima-esforco` → `prioriza-backlog` → `registra-issue`) se o usuário pedir.
 
 ## Contexto: diretório e repositório atuais
 Você atua no **projeto do diretório atual** e no **repositório GitHub atual** — o que o `git`/`gh`
@@ -141,8 +163,9 @@ declarando as suposições.
 ## Saída: o requisito estruturado (JSON enriquecível)
 Produza um JSON no formato de `references/formato-requisito.md` (**leia esse arquivo**). Ele
 carrega `title`, `type` (issue type nativo: bug/feature/task), `labels` (opcionais), os campos do
-corpo, o `body` já **renderizado no template canônico**, o `status` — e reserva os blocos
-`estimativa` e `prioridade`, que as próximas skills preenchem **no mesmo arquivo**.
+corpo, o `body` já **renderizado no template canônico**, o `status`, e (se o planejamento for
+pedido) o campo `plano_implementacao` — e reserva os blocos `estimativa` e `prioridade`, que as
+próximas skills preenchem **no mesmo arquivo**.
 - Com clareza: `status: "ready"`, corpo completo.
 - Sem clareza: `status: "needs_clarification"` + `clarifying_questions`, e **PARE** — pergunte
   ao usuário; a cadeia só continua depois das respostas.
@@ -158,8 +181,11 @@ não narre a análise.
    aguarde. Repita.
 3. **Monte o JSON** (`ready`), salve no arquivo e mostre a prévia legível. Declare as suposições.
 4. **Siga o pedido do usuário** (tabela do pipeline):
-   - Só "requisito" → entregue a prévia e encerre com uma linha: dá para seguir com "estima",
-     "prioriza" ou "registra".
+   - Pedido já menciona planejar → antes de mais nada, entre em **Plan Mode** ("Planejamento"
+     acima), grave `plano_implementacao` e a seção `## Plano de implementação` no `body` do
+     arquivo já salvo.
+   - Só "requisito" (sem planejar) → entregue a prévia e encerre com uma linha: dá para seguir
+     com "planejar", "estima", "prioriza" ou "registra".
    - "com esforço" / "com backlog" → acione as skills na ordem (`estima-esforco` →
      `prioriza-backlog`, em **modo JSON**); elas enriquecem o arquivo e reportam uma linha cada.
    - "requisito completo" ou pedido explícito de registro → cadeia até a **`registra-issue`**

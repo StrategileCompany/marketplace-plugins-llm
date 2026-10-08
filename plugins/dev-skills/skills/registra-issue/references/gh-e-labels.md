@@ -8,6 +8,9 @@ Campos que esta skill usa (schema completo no `formato-requisito.md` da `analist
 - `labels` — array **opcional** de labels complementares; aplique só as que existem.
 - `estimativa` — **opcional** (gravado pela `estima-esforco`): `{tshirt, pontos, confianca, incerteza}`.
 - `prioridade` — **opcional** (gravado pela `prioriza-backlog`): `{score, drivers, confianca, justificativa}`.
+- `plano_implementacao` — **opcional** (gravado pela `analista-de-requisitos`, em Plan Mode):
+  markdown do plano. Presente → publique como **comentário** na issue após criá-la; **nunca**
+  dentro do `body` (o `body` já vem com a seção que aponta pra esse comentário).
 
 Ignore o resto (`fields`, `relacionadas`, `schema_version`). Confira `status`: se **não** for
 `ready`, **não crie** — devolva para a `analista-de-requisitos`. Após criar, acrescente ao JSON o
@@ -82,6 +85,18 @@ N="${URL##*/}"
 # 2) aplica o issue type nativo (se houve match)
 gh api --method PATCH "repos/<owner>/<repo>/issues/$N" -f type="Bug"
 ```
+
+## Plano de implementação (comentário)
+Quando o JSON tiver `plano_implementacao`, publique-o como comentário **depois** de criar a
+issue — o `body` (renderizado pela `analista-de-requisitos`) já chega com a seção
+`## Plano de implementação` apontando pra esse comentário; você só posta o conteúdo, sem tocar o
+corpo.
+```bash
+# salve o plano em arquivo (evita escaping) e comente
+gh issue comment "$N" --body-file "<caminho>/plano-implementacao.md"
+```
+Sem `plano_implementacao` no JSON, pule esta etapa — a issue nasce normal, sem seção extra e sem
+comentário.
 
 ## Board (SEMPRE): adicionar ao projeto da org + campos
 Toda issue registrada entra no **projeto (board) da org**, mesmo sem estimativa/prioridade.
