@@ -7,7 +7,7 @@ skill), é **enriquecido no mesmo arquivo** pelas etapas seguintes e é consumid
 | Etapa | Skill | O que preenche |
 |---|---|---|
 | 1. Análise | `analista-de-requisitos` | `title`, `type`, `labels`, `fields`, `body`, `status` |
-| 1b. Plano (opcional) | `analista-de-requisitos` (Plan Mode) | campo `plano_implementacao` + seção `## Plano de implementação` no `body` |
+| 1b. Plano (opcional) | `planeja-implementacao` (modo JSON) | campo `plano_implementacao` + seção `## Plano de implementação` no `body` |
 | 2. Esforço | `estima-esforco` (modo JSON) | bloco `estimativa` |
 | 3. Prioridade | `prioriza-backlog` (modo JSON) | bloco `prioridade` |
 | 4. Registro | `registra-issue` | bloco `registro` (nº/URL após criar) + comentário com o plano (se houver) |
@@ -60,9 +60,10 @@ significam que a issue nasce sem aquelas marcações.
 - `fields` são a informação mapeada (rastreio/reuso); `body` é o que vai para a issue. Gere os
   dois juntos, coerentes.
 - `plano_implementacao`: **omitido** até o usuário pedir planejamento (não crie vazio). Quem
-  preenche é a própria `analista-de-requisitos`, ao entrar em **Plan Mode** — diferente de
-  `estimativa`/`prioridade`, que só enriquecem o JSON, aqui a skill aciona `EnterPlanMode` de
-  verdade. Presente, o `body` ganha a seção `## Plano de implementação` (template abaixo) e a
+  preenche é a skill `planeja-implementacao` (**modo JSON**), depois que o arquivo já foi salvo
+  pela `analista-de-requisitos` — mesmo padrão de enriquecimento de `estimativa`/`prioridade`, mas
+  essa skill aciona `EnterPlanMode`/`ExitPlanMode` de verdade (as outras duas não tocam
+  ferramentas). Presente, o `body` ganha a seção `## Plano de implementação` (template abaixo) e a
   `registra-issue` publica o conteúdo como **comentário** na issue, na criação.
 - `estimativa` / `prioridade` / `registro`: **omitidos** até a skill correspondente rodar (não crie
   vazios). A analista não os preenche.

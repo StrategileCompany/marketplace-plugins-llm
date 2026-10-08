@@ -276,7 +276,7 @@ do Claude para o Copilot:
 > **Neste plugin:** as três skills que chamam script — `lancamento-nas-lojas`, `versionador` e
 > `deriva-projeto` — usam `${CLAUDE_SKILL_DIR}` no comando de exemplo, porque é o que resolve no
 > Claude Code. Ao copiá-las para o Copilot, troque a variável pelo caminho da pasta da skill. As
-> outras oito não executam nada e vão sem ajuste. Todas as onze já declaram `model`/`effort`.
+> outras nove não executam nada e vão sem ajuste. Todas as doze já declaram `model`/`effort`.
 > Este guia não lista campo extra no frontmatter entre as causas de falha silenciosa (só `name` e
 > `description` — ver tabela acima), mas isso não foi confirmado num VS Code com Copilot de
 > verdade. Se alguma skill parar de aparecer depois desta mudança, remova as duas linhas como

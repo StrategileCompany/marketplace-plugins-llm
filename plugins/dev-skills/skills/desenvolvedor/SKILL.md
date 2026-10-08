@@ -9,7 +9,9 @@ description: >-
   for nova — cria via o pipeline de requisito (analista-de-requisitos →
   estima-esforco → registra-issue), nascendo já dimensionada e no board;
   sincroniza a branch com a base remota por rebase antes de escrever código,
-  move a issue para "In Progress" no board, implementa seguindo os critérios
+  move a issue para "In Progress" no board, oferece planejar a implementação
+  (via planeja-implementacao) quando a issue ainda não tem plano e o tamanho
+  é M ou maior, implementa seguindo os critérios
   de aceitação, valida build+testes (bloqueia se falhar), confere os critérios
   um a um e marca os checkboxes da issue numa única atualização e, no
   fechamento, faz commit/push conforme pedido e, com confirmação, marca Done e
@@ -88,14 +90,25 @@ A primeira verificação: o usuário informou uma **issue** (número/URL)?
    **Única exceção:** quando a transição é *impossível* — o repo não tem board ou falta o scope
    `project` —, **avise explicitamente** que não deu para mover e só então siga. A degradação
    graciosa cobre a **ausência de board**, nunca "pular a etapa por pressa".
-5. **Implemente** usando os **Critérios de aceitação** da issue como especificação. Respeite as
+5. **Planejamento (condicional).** Antes de implementar, confira se a issue já tem plano:
+   - **Corpo já tem `## Plano de implementação`?** → leia o(s) comentário(s) da issue
+     (`gh issue view N --json comments`) e use o **mais recente** como contexto extra antes de
+     codar (complementa, não substitui, os Critérios de aceitação).
+   - **Não tem, e o tamanho é M ou maior** (mesma leitura de tamanho do passo 2; issue sem
+     estimativa também conta como M+) → **pergunte**: *"Quer que eu desenhe um plano de
+     implementação antes (`planeja-implementacao`) ou já implemento direto?"*. Pediu → acione
+     `planeja-implementacao` (**modo issue viva**) sobre a issue e só prossiga depois do plano
+     aprovado e publicado. Recusou/seguiu sem responder a isso → implemente direto.
+   - **Não tem, e o tamanho é PP ou P** → **não pergunte**; implemente direto (mesma lógica do
+     passo 2 para branch).
+6. **Implemente** usando os **Critérios de aceitação** da issue como especificação. Respeite as
    convenções do projeto (CLAUDE.md/AGENTS.md, arquitetura, estilo, testes) — não reinvente.
-6. **Valide:** rode o **build** e os **testes relevantes** do projeto. Descubra os comandos em
+7. **Valide:** rode o **build** e os **testes relevantes** do projeto. Descubra os comandos em
    runtime — CLAUDE.md/AGENTS.md, scripts do `package.json`, `Makefile`, CI, ou o manifesto da
    stack (`dotnet build`, `npm test`, `pytest`, `go test ./...`, `mvn verify`…); **nunca assuma**
    uma stack. **Bloqueie o commit se falhar** — conserte ou reporte; nunca feche com build/teste
    quebrado.
-7. **Confira os critérios de aceitação e marque a issue.** Com build/testes verdes, releia a seção
+8. **Confira os critérios de aceitação e marque a issue.** Com build/testes verdes, releia a seção
    `## Critérios de aceitação` da issue e **julgue cada critério um a um**, em três baldes:
    **satisfeito** (com evidência — arquivo:linha, teste que cobre), **não verificável** (com o
    motivo: exige device físico, ambiente de homologação, dado de produção…) e **não atendido**.
@@ -107,7 +120,7 @@ A primeira verificação: o usuário informou uma **issue** (número/URL)?
    siga com a **correção** ou com **override explícito** do usuário. Se for corrigir, **não escreva
    na issue ainda**: a escrita é a conferência definitiva, feita uma vez só, imediatamente antes do
    commit que vai de fato acontecer. Mecânica e formato em `references/criterios-de-aceitacao.md`.
-8. **Fechamento** (quando o usuário pedir): abaixo.
+9. **Fechamento** (quando o usuário pedir): abaixo.
 
 ## Fechamento (commit / push / versiona / fecha)
 **Gate de segurança — antes de qualquer commit.** Acione a skill **`revisar-seguranca`** sobre o
@@ -141,6 +154,10 @@ Depois, **confirme o fechamento da tarefa**: *"Fechar a tarefa? (Status → Done
   barra** até corrigir ou o usuário liberar explicitamente. Não pule o gate por pressa.
 - **Branch é condicional ao tamanho:** PP/P seguem na branch atual **sem perguntar**; **M ou maior**
   (ou issue sem estimativa) pergunta antes de mover para In Progress. Nunca force branch nova sem o "ok".
+- **Planejamento é condicional ao tamanho:** mesma lógica da branch — PP/P implementam direto; M
+  ou maior (ou issue sem estimativa) pergunta se quer planejar antes de codar. Se a issue já tiver
+  plano (seção `## Plano de implementação` no corpo), leia o comentário mais recente como contexto
+  antes de implementar, mesmo sem perguntar nada.
 - No fechamento, faça só o que foi pedido (commit e/ou push e/ou versiona); **Done + close** exigem
   confirmação explícita.
 - **Mover para `In Progress` antes de codar não é opcional quando existe board** — é o gate que

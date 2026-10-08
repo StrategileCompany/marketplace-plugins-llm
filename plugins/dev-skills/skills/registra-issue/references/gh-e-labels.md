@@ -8,7 +8,7 @@ Campos que esta skill usa (schema completo no `formato-requisito.md` da `analist
 - `labels` — array **opcional** de labels complementares; aplique só as que existem.
 - `estimativa` — **opcional** (gravado pela `estima-esforco`): `{tshirt, pontos, confianca, incerteza}`.
 - `prioridade` — **opcional** (gravado pela `prioriza-backlog`): `{score, drivers, confianca, justificativa}`.
-- `plano_implementacao` — **opcional** (gravado pela `analista-de-requisitos`, em Plan Mode):
+- `plano_implementacao` — **opcional** (gravado pela `planeja-implementacao`, modo JSON):
   markdown do plano. Presente → publique como **comentário** na issue após criá-la; **nunca**
   dentro do `body` (o `body` já vem com a seção que aponta pra esse comentário).
 

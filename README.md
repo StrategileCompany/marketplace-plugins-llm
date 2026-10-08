@@ -1,6 +1,6 @@
 # marketplace-plugins-llm — skills de desenvolvimento para o Claude Code
 
-Onze skills que levam uma necessidade do **requisito ao commit**. Elas interpretam um pedido vago e
+Doze skills que levam uma necessidade do **requisito ao commit**. Elas interpretam um pedido vago e
 o transformam numa issue dimensionada e priorizada no board, implementam seguindo os critérios de
 aceitação, revisam a segurança do diff antes do commit, escrevem a mensagem, versionam e geram as
 notas da release. Duas ampliam o alcance: uma conduz a publicação de apps mobile nas duas lojas, e
@@ -15,7 +15,7 @@ adaptar e forkar — licença [MIT](LICENSE).
 /plugin install dev-skills@dev-tools
 ```
 
-- **Marketplace:** `dev-tools` · **Plugin:** `dev-skills` — agrupa as onze skills
+- **Marketplace:** `dev-tools` · **Plugin:** `dev-skills` — agrupa as doze skills
 - **Invocação:** com namespace (`/dev-skills:commit`) ou automática, quando o seu pedido
   combina com a `description` da skill
 - Instalado no seu perfil, vale em **qualquer repositório**
@@ -34,7 +34,7 @@ são decisões nossas que passam a valer no seu ambiente, e é melhor conhecê-l
 
 ### 1. Plataforma: duas skills exigem Windows
 
-Oito das onze são agnósticas de sistema operacional. As três que executam script, não:
+Nove das doze são agnósticas de sistema operacional. As três que executam script, não:
 
 | Skill | Script | Exigência |
 |---|---|---|
@@ -51,7 +51,7 @@ das lojas por API funcionam em qualquer sistema.
 Deliberadamente opinativo: projetos **C#/.NET** (lê `<AssemblyVersion>` dos `.csproj`), versão no
 formato **`yyyy.MM.dd.HHmm`** e fuso padrão **`America/Sao_Paulo`** — sem `-TimeZone`, o carimbo sai
 no horário de Brasília. Se o seu projeto não é .NET, ou a sua convenção é SemVer, é a skill a
-trocar. As outras dez não presumem stack: build, testes e base remota são descobertos no repo. A
+trocar. As outras onze não presumem stack: build, testes e base remota são descobertos no repo. A
 `deriva-projeto` é agnóstica no roteiro e descobre a stack em runtime, mas seus guias detalhados
 cobrem .NET (Azure Functions, Blazor Server/WASM) — em outras stacks o critério vale igual, só sem
 o guia pronto.
@@ -117,7 +117,8 @@ de release muito diferentes.
 
 | Skill | O que faz |
 |---|---|
-| `analista-de-requisitos` | Transforma uma necessidade vaga num requisito estruturado (user story + critérios de aceitação) e conduz o pipeline de requisito: "requisito" → "com esforço" → "com backlog" → "completo". Pedido junto de "planejar" entra em Plan Mode e grava o plano de implementação no requisito. |
+| `analista-de-requisitos` | Transforma uma necessidade vaga num requisito estruturado (user story + critérios de aceitação) e conduz o pipeline de requisito: "requisito" → "com esforço" → "com backlog" → "completo". Pedido junto de "planejar" aciona a skill `planeja-implementacao`. |
+| `planeja-implementacao` | Desenha o plano de implementação com o Plan Mode nativo (EnterPlanMode/ExitPlanMode) antes de alterar código: enriquece o JSON do requisito (modo JSON, pré-issue) ou planeja uma issue já existente/em andamento (modo issue viva), publicando o plano como comentário — cada replanejamento soma um novo comentário. |
 | `commit` | Gera mensagens de commit no padrão Conventional Commits em pt-BR, com parágrafo de negócio, bullets técnicos e `Refs: #<número>` — e faz o commit, passando antes pelo gate de segurança. Nunca credita IA como co-autora. |
 | `desenvolvedor` | Orquestra o fluxo completo do backlog ao commit: issue → sincroniza a branch com a base remota (rebase) → In Progress → implementação → build+testes → conferência dos critérios de aceitação (marca os checkboxes da issue numa única atualização) → gate de segurança → commit/push → Done. |
 | `estima-esforco` | Estima o tamanho em escala T-shirt/Fibonacci ancorada em rubrica: enriquece o JSON do requisito (pré-issue) ou grava em issues vivas (título, corpo e Projects v2). |
@@ -138,6 +139,7 @@ mecânica barata em `haiku`, julgamento ancorado em rubrica em `sonnet`, e onde 
 | Skill | model | effort | Por quê |
 |---|---|---|---|
 | `analista-de-requisitos` | `sonnet` | `high` | Inferir o requisito de uma frase vaga; erro aqui contamina a cadeia toda. |
+| `planeja-implementacao` | `opus` | `high` | Desenha a abordagem antes de codar; plano errado propaga pro `desenvolvedor` e pro código — retrabalho custa mais que o modelo. |
 | `estima-esforco` | `sonnet` | `low` | Rubrica faz o trabalho pesado; em lote, o custo multiplica. |
 | `prioriza-backlog` | `sonnet` | `low` | Drivers + aritmética do score. |
 | `registra-issue` | `haiku` | `low` | `gh`/GraphQL seguindo receita. |
@@ -196,6 +198,9 @@ marketplace-plugins-llm/                ← raiz deste repo git
             │   ├── assets/
             │   ├── references/
             │   └── scripts/
+            ├── planeja-implementacao/
+            │   ├── SKILL.md
+            │   └── references/
             ├── prioriza-backlog/
             │   ├── SKILL.md
             │   └── references/
@@ -224,7 +229,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "3.4.0"
+      "version": "3.5.0"
     }
   ]
 }
@@ -234,8 +239,8 @@ marketplace-plugins-llm/                ← raiz deste repo git
 ```json
 {
   "name": "dev-skills",
-  "description": "Onze skills de desenvolvimento para o Claude Code, do requisito ao commit",
-  "version": "3.4.0",
+  "description": "Doze skills de desenvolvimento para o Claude Code, do requisito ao commit",
+  "version": "3.5.0",
   "author": { "name": "StrategileCompany" }
 }
 ```

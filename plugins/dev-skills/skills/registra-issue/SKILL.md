@@ -9,7 +9,7 @@ description: >-
   labels existentes, prefixo de tamanho no título, linhas de
   estimativa/prioridade no corpo e SEMPRE adiciona a issue ao board da org,
   preenchendo Estimate/Size/Priority quando presentes. Se o requisito tiver
-  plano_implementacao (gravado em Plan Mode), publica o plano como comentário
+  plano_implementacao (gravado pela planeja-implementacao), publica o plano como comentário
   logo após criar a issue. Funciona em QUALQUER
   repositório: detecta o repo pelo remote do Git e usa o board memorizado
   (memória projeto-board; degrada com aviso). Pode ser acionada em QUALQUER
