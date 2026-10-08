@@ -10,6 +10,8 @@ description: >-
   e guardado na memória do projeto (nada é hardcoded). Use quando o usuário disser "gera release notes",
   "notas da versão", "novidades", "what's new", "changelog", "o que mudou nesta versão", ou logo após
   versionar (a skill `versionador` a aciona antes do commit do bump). NUNCA escreve sem confirmação.
+model: sonnet
+effort: medium
 ---
 
 # Release notes → CHANGELOG técnico + Novidades para o usuário

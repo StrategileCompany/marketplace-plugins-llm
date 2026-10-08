@@ -129,6 +129,35 @@ de release muito diferentes.
 | `deriva-projeto` | Deriva um projeto novo do clone de um repositório existente: remove o domínio antigo, preserva a infraestrutura (bootstrap/DI, autenticação, middlewares, layout, componentes genéricos, CI/CD, IaC), renomeia pastas, projetos, namespaces, chaves e recursos de nuvem, e **regenera segredos e identidades** em vez de herdá-los — o único erro desta operação que não aparece no build. Levanta um inventário por script (variantes de caixa do token, encoding, pontos de entrada, chaves sensíveis, domínios, banco, artefatos de agente), renomeia byte-safe preservando encoding e BOM, e fecha com build, testes, varredura de resíduos e a aplicação subindo. **Nunca commita.** |
 | `lancamento-nas-lojas` | Conduz o lançamento (ou atualização) de um app na Google Play e Apple App Store. **Lê as constantes da sua organização** (contas, App ID, política, assinatura) de um arquivo de configuração externo e, não o encontrando, **entrevista você e o gera**. Separa pré-requisitos × exigências de cada loja, **valida assets** (dimensão + alpha) via script PowerShell, exige o **ensaio contra o maior tenant real** e alarme de 5xx antes do envio (_aprovado ≠ funcionando_), gerencia as lojas **por API** em vez de navegador, e guia ficha, Data Safety/App Privacy e o build iOS de nuvem. |
 
+### Modelo e esforço por skill
+
+Cada `SKILL.md` declara `model` e `effort` no frontmatter, escolhidos pelo propósito da skill —
+mecânica barata em `haiku`, julgamento ancorado em rubrica em `sonnet`, e onde um erro é caro
+(gate de segurança, implementação, operação em massa) em `opus`:
+
+| Skill | model | effort | Por quê |
+|---|---|---|---|
+| `analista-de-requisitos` | `sonnet` | `high` | Inferir o requisito de uma frase vaga; erro aqui contamina a cadeia toda. |
+| `estima-esforco` | `sonnet` | `low` | Rubrica faz o trabalho pesado; em lote, o custo multiplica. |
+| `prioriza-backlog` | `sonnet` | `low` | Drivers + aritmética do score. |
+| `registra-issue` | `haiku` | `low` | `gh`/GraphQL seguindo receita. |
+| `commit` | `haiku` | `medium` | Redação curta a partir do diff; o parágrafo de negócio alimenta as Novidades. |
+| `versionador` | `haiku` | `low` | Script de versão, tag e push. |
+| `release-notes` | `sonnet` | `medium` | Redação para dois públicos (técnico e usuário final). |
+| `revisar-seguranca` | `opus` | `high` | Gate antes do commit; falso negativo é caro. |
+| `desenvolvedor` | `opus` | `high` | Implementação; maior volume de tokens, e retrabalho custa mais que o modelo. |
+| `deriva-projeto` | `opus` | `high` | Operação longa e arriscada (segredos, renomeação em massa). |
+| `lancamento-nas-lojas` | `sonnet` | `medium` | Checklist guiado, entrevista e APIs das lojas; não precisa de raciocínio profundo. |
+
+**O par vale só durante o turno em que a skill está ativa** — na sua próxima mensagem a sessão
+volta ao modelo e ao esforço que você tinha antes. Nas skills de **vários turnos**
+(`desenvolvedor`, `deriva-projeto`, `lancamento-nas-lojas`), ele cobre só o **primeiro turno**:
+depois de uma pergunta sua (aprovar o plano, confirmar a implementação), a sessão já voltou ao
+seu modelo. Para manter `opus` numa dessas durante toda a tarefa, troque você mesmo com
+`/model opus` antes de continuar. Se o modelo escolhido estiver bloqueado pela sua organização
+(`availableModels`), a skill roda no modelo da sessão, sem erro — só edite o frontmatter se quiser
+outro par.
+
 ## 2. Estrutura do repositório
 
 ```
@@ -195,7 +224,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
       "name": "dev-skills",
       "source": "./plugins/dev-skills",
       "description": "Skills de desenvolvimento, do requisito ao commit",
-      "version": "3.2.1"
+      "version": "3.4.0"
     }
   ]
 }
@@ -206,7 +235,7 @@ marketplace-plugins-llm/                ← raiz deste repo git
 {
   "name": "dev-skills",
   "description": "Onze skills de desenvolvimento para o Claude Code, do requisito ao commit",
-  "version": "3.2.1",
+  "version": "3.4.0",
   "author": { "name": "StrategileCompany" }
 }
 ```

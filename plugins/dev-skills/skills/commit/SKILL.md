@@ -8,6 +8,8 @@ description: >-
   "commit message", "gera o commit", "descreve essas alterações para commit" ou variações — em
   qualquer repositório. Vale mesmo quando o usuário não citar "Conventional Commits"
   explicitamente. Nunca inclui a LLM como coautora da mensagem.
+model: haiku
+effort: medium
 ---
 
 # Mensagem de commit (Conventional Commits, pt-BR)
@@ -46,7 +48,7 @@ Refs: #<numero>
 - **Sempre faça o commit**, usando a mensagem gerada — a menos que o usuário peça explicitamente para NÃO commitar ou peça APENAS a mensagem: nesse caso apenas devolva a mensagem no chat, dentro de um bloco de código, pronta para copiar. Conta como APENAS a mensagem pedir para **revisar, padronizar ou reescrever** uma mensagem já existente.
 - Baseie o conteúdo nas alterações reais: inspecione o diff com `git status`/`git diff` para descrever fielmente o que mudou — sem inventar mudanças.
 - **Antes de commitar, mostre o que vai entrar** (`git status --short`) e estague só o que a mensagem descreve. Se aparecer algo fora do escopo da mensagem, avise antes de prosseguir.
-- **Gate de segurança:** acione a skill `revisar-seguranca` sobre o diff estagiado. Achado **Crítico** ou **Alto** barra o commit até corrigir ou o usuário liberar explicitamente.
+- **Gate de segurança:** acione a skill `revisar-seguranca` sobre o diff estagiado — **depois** de a mensagem já estar composta e estagiada. Nessa ordem, o trabalho desta skill roda inteiro no seu próprio modelo; só o `git commit` final, mecânico, roda depois do gate (que tem o seu). Achado **Crítico** ou **Alto** barra o commit até corrigir ou o usuário liberar explicitamente.
 - Ajuste tipo/escopo/tamanho do corpo conforme o pedido do usuário (ex.: "encurte o corpo", "use escopo X").
 
 ## Exemplo

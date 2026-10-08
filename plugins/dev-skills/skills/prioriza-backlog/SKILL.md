@@ -15,6 +15,8 @@ description: >-
   primeiro/a seguir", "ordena o backlog", "qual a prioridade dessa issue",
   "vale a pena agora?", ou dentro do pipeline de requisito. No modo issue
   viva, NUNCA grava sem confirmação.
+model: sonnet
+effort: low
 ---
 
 # Prioriza backlog → o que fazer primeiro

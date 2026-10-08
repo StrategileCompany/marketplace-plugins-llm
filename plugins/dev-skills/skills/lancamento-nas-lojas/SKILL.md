@@ -14,6 +14,8 @@ description: >-
   maior tenant real e alarme de 5xx antes do envio (aprovado ≠ funcionando) e
   gerencia as lojas por API. NÃO manuseia segredos: aponta onde estão, nunca
   cola o valor.
+model: sonnet
+effort: medium
 ---
 
 # Lançamento de app nas lojas (Google Play + Apple App Store)

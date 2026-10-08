@@ -15,6 +15,8 @@ description: >-
   repositório e stack (detecta a stack em runtime). NUNCA corrige sozinha nem
   commita: reporta com arquivo:linha, o porquê e a correção sugerida, e só
   aplica com confirmação.
+model: opus
+effort: high
 ---
 
 # Revisar segurança: o portão de segurança do diff

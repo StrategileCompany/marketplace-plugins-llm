@@ -14,6 +14,8 @@ description: >-
   um a um e marca os checkboxes da issue numa única atualização e, no
   fechamento, faz commit/push conforme pedido e, com confirmação, marca Done e
   fecha a issue. Global — funciona em qualquer repositório.
+model: opus
+effort: high
 ---
 
 # Desenvolvedor: da solicitação ao commit

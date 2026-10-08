@@ -17,6 +17,8 @@ description: >-
   no backlog", "cria uma issue", "abre um card", "registra isso", "preciso de
   X", mesmo sem detalhar. NÃO cria a issue: o registro é da skill
   registra-issue.
+model: sonnet
+effort: high
 ---
 
 # Analista de Requisitos → requisito estruturado (porta de entrada do pipeline)

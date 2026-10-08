@@ -72,6 +72,7 @@ Ao criar issues no GitHub:
 | `compatibility` | Não | Requisitos de ambiente (produto, pacotes de sistema). |
 | `metadata` | Não | Pares chave-valor livres. |
 | `allowed-tools` | Não | Lista de ferramentas pré-aprovadas (separadas por espaço). |
+| `model` / `effort` | Não | **Só Claude Code** — troca o modelo/esforço da sessão enquanto a skill está ativa. O Copilot não os lê; neste plugin, nenhuma skill depende deles para funcionar lá. |
 
 > ⚠️ **Duas regras que causam "falha silenciosa"** (a skill simplesmente não
 > aparece, sem erro):
@@ -260,6 +261,7 @@ do Claude para o Copilot:
 | **Limite da `description`** | tolerante (descrições longas ajudam o disparo) | **máx. 1.024 caracteres** (o VS bloqueia) |
 | **Variável `${CLAUDE_SKILL_DIR}`** | substituída pelo caminho da skill | **não** é substituída → caminho de script quebra |
 | **Caminho de scripts** | pode usar a variável | use **caminho relativo** (ex.: `scripts/Meu.ps1`) |
+| **`model` / `effort`** | lidos; valem durante o turno da skill | ignorados — o Copilot escolhe o modelo da própria sessão |
 
 **Recomendações para nascer portável:**
 - Escreva a `description` **enxuta e ≤1.024**, começando por *o que faz* e
@@ -271,10 +273,14 @@ do Claude para o Copilot:
   Copilot (por isso, aqui, **copiar é melhor que symlink** — o symlink forçaria
   conteúdo idêntico nos dois lados).
 
-> **Neste plugin:** as duas skills que chamam script — `lancamento-nas-lojas` e `versionador` —
-> usam `${CLAUDE_SKILL_DIR}` no comando de exemplo, porque é o que resolve no Claude Code. Ao
-> copiá-las para o Copilot, troque a variável pelo caminho da pasta da skill. As outras oito não
-> executam nada e vão sem ajuste.
+> **Neste plugin:** as três skills que chamam script — `lancamento-nas-lojas`, `versionador` e
+> `deriva-projeto` — usam `${CLAUDE_SKILL_DIR}` no comando de exemplo, porque é o que resolve no
+> Claude Code. Ao copiá-las para o Copilot, troque a variável pelo caminho da pasta da skill. As
+> outras oito não executam nada e vão sem ajuste. Todas as onze já declaram `model`/`effort`.
+> Este guia não lista campo extra no frontmatter entre as causas de falha silenciosa (só `name` e
+> `description` — ver tabela acima), mas isso não foi confirmado num VS Code com Copilot de
+> verdade. Se alguma skill parar de aparecer depois desta mudança, remova as duas linhas como
+> primeiro teste.
 
 ---
 

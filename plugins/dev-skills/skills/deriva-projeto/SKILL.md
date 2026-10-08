@@ -13,6 +13,8 @@ description: >-
   repositório", "criar o esqueleto do novo sistema a partir deste" — mesmo sem
   a palavra "template" e sem citar os nomes. Agnóstica de stack: descobre tipo
   de projeto, build, testes, CI/CD e IaC em runtime. NUNCA faz commit.
+model: opus
+effort: high
 ---
 
 # Derivar um projeto novo a partir de um repositório existente

@@ -17,6 +17,8 @@ description: >-
   nova confirmação). Use quando o usuário disser "registra", "cria a issue",
   "abre no GitHub", "manda pro backlog", "pode criar". Sem pedido explícito de
   registro, confirma antes de criar.
+model: haiku
+effort: low
 ---
 
 # Registrar issue no GitHub (o fecho do pipeline)

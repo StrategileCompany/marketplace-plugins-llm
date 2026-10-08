@@ -14,6 +14,8 @@ description: >-
   disser "estima", "dimensiona", "classifica o esforço/tamanho", "quantos
   pontos", "estima o backlog", "que tamanho é essa issue", ou dentro do
   pipeline de requisito. No modo issue viva, NUNCA grava sem confirmação.
+model: sonnet
+effort: low
 ---
 
 # Estima esforço → dimensionar o requisito ou a issue

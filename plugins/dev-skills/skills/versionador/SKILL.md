@@ -14,6 +14,8 @@ description: >-
   antes do commit. O usuario pode restringir o escopo ("sem commit", "sem
   push", "so atualiza") ou pular partes ("sem tag", "sem novidades"/"sem
   changelog").
+model: haiku
+effort: low
 ---
 
 # Atualizacao de versao .NET (yyyy.MM.dd.HHmm)
